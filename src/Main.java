@@ -16,5 +16,13 @@ public class Main {
         *
         *
         * */
+
+
+
+        Supplier s = new Supplier("1", "k");
+        Product p = new Product("p1", "ppp", s);
+        System.out.println(p);
+        System.out.println(s);
+        LineItem l = new LineItem(p);
     }
 }

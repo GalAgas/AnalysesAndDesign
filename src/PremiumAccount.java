@@ -7,5 +7,14 @@ public class PremiumAccount extends Account {
 
     public PremiumAccount(String id, String billing_address, WebUser webUser, Customer customer) {
         super(id, billing_address, webUser, customer);
+        products = new ArrayList<>();
+    }
+
+    public void addProduct(Product product){
+        products.add(product);
+    }
+
+    public void removeProduct(Product product){
+        products.remove(product);
     }
 }
