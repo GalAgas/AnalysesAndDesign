@@ -9,4 +9,8 @@ public class ShoppingCart {
     private WebUser webUser;
     private Account account;
 
+    public ShoppingCart(WebUser webUser, Account account) {
+        this.webUser = webUser;
+        this.account = account;
+    }
 }
