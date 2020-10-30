@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class System {
+public class ShoppingSystem {
     private HashMap<String, WebUser> webUsers;
     private HashMap<String, Supplier> suppliers;
     private HashMap<String, Product> idsToProducts;
@@ -9,7 +8,7 @@ public class System {
     private WebUser currentLoggedIn;
 //    private ArrayList<Payment> payments;
 
-    public System() {
+    public ShoppingSystem() {
         this.webUsers = new HashMap<>();
         this.suppliers = new HashMap<>();
         this.idsToProducts = new HashMap<>();
