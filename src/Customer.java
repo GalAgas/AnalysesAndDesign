@@ -4,7 +4,7 @@ public class Customer {
     private String phone;
     private String email;
 
-    // Associations
+    // Associationsssss
     private WebUser webUser;
     private Account account;
 
