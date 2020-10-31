@@ -12,18 +12,38 @@ public class Account {
 
     // Associations
     private HashMap<String, Payment> payments;
-    private HashMap<String, Order> orders;
+    private ArrayList<Order> orders;
     private ShoppingCart shoppingCart;
     private Customer customer;
 
     public Account(String id, String billing_address, WebUser webUser, Customer customer) {
         this.id = id;
         this.billing_address = billing_address;
-
         this.shoppingCart = new ShoppingCart(webUser,this);
         this.customer = customer;
+        orders = new ArrayList<>();
+        payments = new HashMap<>();
     }
 
+    /**
+     * adds a new order to orders list
+     * @param order
+     */
+    public void addOrder(Order order){
+        if(!orders.contains(order)){
+            orders.add(order);
+        }
+    }
+
+    /**
+     * adds a new payment to payments list
+     * @param payment
+     */
+    public void addPayment (Payment payment){
+        if (!payments.containsKey(payment.getId())) {
+            payments.put(payment.getId(), payment);
+        }
+    }
 
     public String getId() {
         return id;
@@ -81,11 +101,11 @@ public class Account {
         this.payments = payments;
     }
 
-    public HashMap<String, Order> getOrders() {
+    public ArrayList<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(HashMap<String, Order> orders) {
+    public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
 
@@ -96,4 +116,10 @@ public class Account {
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
+   /* @Override
+    public String toString() {
+        return "Account No."+id+":\n";
+    }
+    */
 }
