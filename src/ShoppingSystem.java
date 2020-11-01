@@ -84,8 +84,9 @@ public class ShoppingSystem {
         }
         return new Order(this.currentLoggedIn.getCustomer().getAccount());
     }
-    public void addlineItetmtoOrder(Order order, Product pToadd, int amount){
-        LineItem l = new LineItem(pToadd, amount, pToadd.getPrice()*amount,order, this.currentLoggedIn.getShoppingCart());
+    public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
+        LineItem l = new LineItem(pToadd, amount, pToadd.getPrice() * amount, order, this.currentLoggedIn.getShoppingCart());
+    }
 
 
     public void DisplayOrder(){
@@ -190,9 +191,6 @@ public class ShoppingSystem {
         }
     }
 
-    public WebUser getCurrentLoggedIn() {
-        return currentLoggedIn;
-    }
 
     /**
      * Helper function that inserts objects into the system
