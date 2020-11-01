@@ -58,4 +58,14 @@ public class WebUser {
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
+    @Override
+    public String toString() {
+        return "User: \nID: " + login_id + ", Name: " + login_id;
+    }
+
+    public String displayUser(){
+        return this.toString() + ", Password: " + this.password + ", State: " + this.state + "\n" +
+                "Customer: " + this.getCustomer().getId()  + ", Shopping Cart: " + this.getShoppingCart().getID();
+    }
 }

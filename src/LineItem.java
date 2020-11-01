@@ -7,7 +7,7 @@ public class LineItem {
     private static Integer autoID=0;
     private String ID;
 
-    // Associationsssss
+    // Associations
     private Order order;
     private ShoppingCart shoppingCart;
     private Product product;
@@ -48,5 +48,13 @@ public class LineItem {
     @Override
     public String toString() {
         return product.toString() +" quantity:" + this.quantity + ", price: "+ this.price;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String displayLineItem(){
+        return "LineItem \nNo. " + this.ID;
     }
 }

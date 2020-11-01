@@ -99,4 +99,8 @@ public class Order {
         return toReturn;
 
     }
+
+    public String displayOrderNumber(){
+        return "Order \nNo." + this.number;
+    }
 }
