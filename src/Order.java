@@ -78,6 +78,10 @@ public class Order {
         }
     }
 
+    public void removeLineItem(LineItem l) {
+        this.lineItems.remove(l);
+    }
+
     @Override
     public String toString() {
         String toReturn = "Order No." + number +":\n"
@@ -99,4 +103,5 @@ public class Order {
         return toReturn;
 
     }
+
 }

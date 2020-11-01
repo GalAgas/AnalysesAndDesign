@@ -27,4 +27,8 @@ public class ShoppingCart {
         }
 
     }
+
+    public void removeLineItem(LineItem lineItem) {
+        this.lineItems.remove(lineItem);
+    }
 }

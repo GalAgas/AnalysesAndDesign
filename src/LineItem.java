@@ -7,7 +7,7 @@ public class LineItem {
     private static Integer autoID=0;
     private String ID;
 
-    // Associationsssss
+    // Associations
     private Order order;
     private ShoppingCart shoppingCart;
     private Product product;
@@ -35,6 +35,30 @@ public class LineItem {
 
     public int getPrice() {
         return price;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public boolean isOrdered() {
