@@ -12,12 +12,20 @@ public class ShoppingCart {
     private WebUser webUser;
     private Account account;
 
+    public void setWebUser(WebUser webUser) {
+        this.webUser = webUser;
+    }
+
     public ShoppingCart(WebUser webUser, Account account) {
         this.autoID += 1;
         this.ID = autoID.toString();
         this.webUser = webUser;
         this.account = account;
         this.lineItems = new ArrayList<>();
+    }
+
+    public WebUser getWebUser() {
+        return webUser;
     }
 
     public void addLineItem(LineItem lineItem) {
@@ -28,7 +36,25 @@ public class ShoppingCart {
 
     }
 
+
     public void removeLineItem(LineItem lineItem) {
         this.lineItems.remove(lineItem);
+
+    @Override
+    public String toString() {
+        return "ShoppingCart:\n" +
+                "ID: " + ID;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String displayCart(){
+        return this.toString() + "Created at: " + this.created;
+    }
+
+    public ArrayList<LineItem> getLineItems() {
+        return lineItems;
     }
 }

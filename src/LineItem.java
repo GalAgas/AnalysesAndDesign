@@ -73,4 +73,12 @@ public class LineItem {
     public String toString() {
         return product.toString() +" quantity:" + this.quantity + ", price: "+ this.price;
     }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String displayLineItem(){
+        return "LineItem \nNo. " + this.ID;
+    }
 }

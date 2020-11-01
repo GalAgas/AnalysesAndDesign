@@ -117,9 +117,8 @@ public class Account {
         this.shoppingCart = shoppingCart;
     }
 
-   /* @Override
+    @Override
     public String toString() {
-        return "Account No."+id+":\n";
+        return "Account: \nID: " + id + ", Name: " + id;
     }
-    */
 }

@@ -22,7 +22,7 @@ public class Product {
         this.premiumAccount = null;
 
     }
-
+  
     public String getId() {
         return id;
     }
@@ -83,6 +83,19 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product id: " + id + ", name: " + name;
+        return "Product: \nProduct id: " + id + ", name: " + name;
+    }
+
+    public String displayProduct(){
+        String details = this.toString() + "\nSupplier:\n";
+        details+=this.supplier.getName() +"\n";
+        if(this.premiumAccount != null){
+            details += this.premiumAccount.getId() + "\n";
+        }
+        for(LineItem li: this.getLineItems()){
+            details+= li.getID() + ", ";
+        }
+        if(this.getLineItems().size() > 1) return details.substring(0, details.length()-2);
+        return details;
     }
 }
