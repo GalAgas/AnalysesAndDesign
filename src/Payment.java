@@ -47,4 +47,8 @@ public abstract class Payment {
         return "Payment id: "+this.id +", paid at " +this.paid
                 + ", Total paid: "+this.total+", Details: "+this.details;
     }
+
+    public String displayPaymentId(){
+        return "Payment id: "+this.id;
+    }
 }

@@ -10,6 +10,18 @@ public class Product {
     private PremiumAccount premiumAccount;
 
 
+    public ArrayList<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public Product(String id, String name, Supplier supplier) {
         this.id = id;
         this.name = name;
@@ -40,6 +52,19 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product id: " + id + ", name: " + name;
+        return "Product: \nProduct id: " + id + ", name: " + name;
+    }
+
+    public String displayProduct(){
+        String details = this.toString() + "\nSupplier:\n";
+        details+=this.supplier.getName() +"\n";
+        if(this.premiumAccount != null){
+            details += this.premiumAccount.getId() + "\n";
+        }
+        for(LineItem li: this.getLineItems()){
+            details+= li.getID() + ", ";
+        }
+        if(this.getLineItems().size() > 1) return details.substring(0, details.length()-2);
+        return details;
     }
 }

@@ -70,4 +70,14 @@ public class Customer {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Override
+    public String toString() {
+        return "Customer: \nID: " + id + ", Name: " + id;
+    }
+
+    public String displayCustomer(){
+        return this.toString() + ", Address: " + this.address + ", Phone: " + this.phone
+                + ", Email: " + this.email;
+    }
 }
