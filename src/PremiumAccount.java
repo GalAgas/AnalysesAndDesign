@@ -11,10 +11,16 @@ public class PremiumAccount extends Account {
     }
 
     public void addProduct(Product product){
-        products.add(product);
+        if (!products.contains(product)){
+            products.add(product);
+        }
+
     }
 
     public void removeProduct(Product product){
-        products.remove(product);
+        if (product != null)
+        {
+            products.remove(product);
+        }
     }
 }

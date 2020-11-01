@@ -71,7 +71,7 @@ public class Order {
      * @param lineItem
      */
     public void addLineItem (LineItem lineItem){
-        if (this.orderStatus != OrderStatus.Closed && !lineItem.isOrdered()){
+        if (this.orderStatus != OrderStatus.Closed && !lineItem.isOrdered() && !lineItems.contains(lineItem)){
             lineItems.add(lineItem);
             total += lineItem.getPrice();
             lineItem.setOrdered(true);
