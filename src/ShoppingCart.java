@@ -36,6 +36,10 @@ public class ShoppingCart {
 
     }
 
+
+    public void removeLineItem(LineItem lineItem) {
+        this.lineItems.remove(lineItem);
+
     @Override
     public String toString() {
         return "ShoppingCart:\n" +

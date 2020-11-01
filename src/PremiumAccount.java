@@ -23,4 +23,12 @@ public class PremiumAccount extends Account {
             products.remove(product);
         }
     }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
 }
