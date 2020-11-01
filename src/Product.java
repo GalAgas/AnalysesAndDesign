@@ -31,7 +31,11 @@ public class Product {
 
     //need to connect also from lineItem, !!
     public void addLineItem(LineItem lineItem){
-        lineItems.add(lineItem);
+        if (!lineItems.contains(lineItem))
+        {
+            lineItems.add(lineItem);
+        }
+
     }
 
     @Override
