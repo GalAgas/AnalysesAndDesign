@@ -1,12 +1,213 @@
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
     // User interface
 
         // build initial system
 
+        ShoppingSystem shopsys = new ShoppingSystem();
 
+        boolean done = false;
+
+        System.out.println("Welcome to our store!");
+        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+
+        while (!done){
+            System.out.println("Please type a command:");
+            String input = myObj.nextLine();  // Read user input
+
+            if (input.startsWith("Add WebUser")){
+                String isPrem;
+                String login_id;
+                String password;
+
+                String address;
+                String phone;
+                String email;
+
+                //if getting login_id throgh input
+//                String log = input.substring(12);
+//                System.out.println(log);
+
+                //if getting login_id throgh second input from user
+                System.out.println("Please enter login ID:");
+                login_id = myObj.nextLine();
+
+                System.out.println("Please enter password:");
+                password = myObj.nextLine();
+
+                System.out.println("Premium accout? y/n:");
+                isPrem = myObj.nextLine();
+                boolean isPremium;
+                if (isPrem.equals("y")){
+                    isPremium = true;
+                }
+                else if (isPrem.equals("n")){
+                    isPremium = false;
+                }
+                else {
+                    System.out.println("not a valid input!");
+                    System.out.println("making you not premium!");
+                    isPremium = false;
+                }
+
+                System.out.println("Please enter address:");
+                address = myObj.nextLine();
+
+                System.out.println("Please enter phone:");
+                phone = myObj.nextLine();
+
+                System.out.println("Please enter email:");
+                email = myObj.nextLine();
+
+                try{
+                    shopsys.addUser(login_id, password, isPremium, address, phone, email);
+
+                    System.out.println("Congratulations! Your'e successfully added!");
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println("Web user not added! Please try again.");
+                }
+            }
+
+            else if (input.startsWith("Remove WebUser")){
+                String login_id;
+
+                //if getting login_id throgh second input from user
+                System.out.println("Please enter login ID:");
+                login_id = myObj.nextLine();
+
+                try {
+                    shopsys.removeUser(login_id);
+                    System.out.println("Your'e successfully removed!");
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Web user not removed! Please try again.");
+                }
+
+            }
+
+            else if (input.startsWith("Login WebUser")){
+                String login_id;
+                String password;
+
+                System.out.println("Please enter your login ID:");
+                login_id = myObj.nextLine();
+
+                System.out.println("Please enter your password:");
+                password = myObj.nextLine();
+
+
+                try {
+                    shopsys.logIn(login_id, password);
+                    System.out.println("Your'e successfully logged in!");
+
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println("Please try again.");
+                }
+                }
+
+            else if (input.startsWith("Logout WebUser")){
+                try {
+                    //don't need to pass the currUser, shopSys already have this attribute
+                    //need to change the method
+                    shopsys.logOut(shopsys.getCurrentLoggedIn().getLogin_id());
+                    System.out.println("Your'e successfully logged out!");
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println("Your'e still logged in! Please try again.");
+                }
+            }
+
+            else if (input.startsWith("Make order")){
+
+
+            }
+
+            else if (input.startsWith("Display order")){
+                shopsys.DisplayOrder();
+            }
+
+            else if (input.startsWith("Link Product")){
+                String productName;
+
+                System.out.println("Please enter product's name:");
+                productName = myObj.nextLine();
+
+                //need status??? succeed/failed
+                shopsys.linkProductToPrem(productName);
+
+            }
+
+            else if (input.startsWith("Add Product")){
+                String supplierId;
+                String productId;
+                String productName;
+
+                System.out.println("Dear supplier, please enter your ID:");
+                supplierId = myObj.nextLine();
+
+                System.out.println("Please enter product's ID:");
+                productId = myObj.nextLine();
+
+                System.out.println("Please enter product's name:");
+                productName = myObj.nextLine();
+
+                //need to change method's parameter supplier Id instead of supplier's instance
+                //surrounds with try&catch
+
+                shopsys.addProduct(productName, productId, shopsys.getSuppliers().get(supplierId));
+
+                System.out.println("Your product has successfully added!");
+
+
+                System.out.println("The product not added. Please try again.");
+            }
+
+            else if (input.startsWith("Delete Product")){
+                String productName;
+
+                System.out.println("Please enter product's name:");
+                productName = myObj.nextLine();
+
+                //need status??? succeed/failed
+                //surrounds with try&catch
+                shopsys.deleteProduct(productName);
+            }
+
+            else if (input.startsWith("ShowAllObjects")){
+                System.out.println("Current all objects:");
+                shopsys.showAllObjects();
+
+            }
+
+            else if (input.startsWith("ShowObjectId")){
+                String objectId;
+
+                System.out.println("Please enter object's ID:");
+                objectId = myObj.nextLine();
+
+                //need status??? succeed/failed
+                //surrounds with try&catch -object doesn't exist
+                shopsys.showObject(objectId);
+            }
+
+            else if(input.equals("Done")){
+                done = true;
+                System.out.println("Goodbye!");
+            }
+
+            else{
+                System.out.println("Not a valid input!");
+            }
+        }
 
         /*switch case:
         * case 1:
