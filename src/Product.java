@@ -22,6 +22,11 @@ public class Product {
         this.premiumAccount = null;
 
     }
+
+
+    public void removeLineItem(LineItem lineItem){
+        lineItems.remove(lineItem);
+    }
   
     public String getId() {
         return id;
@@ -81,9 +86,10 @@ public class Product {
 
     }
 
+
     @Override
     public String toString() {
-        return "Product: \nProduct id: " + id + ", name: " + name;
+        return "Product: \nProduct ID: " + id + ", name: " + name;
     }
 
     public String displayProduct(){

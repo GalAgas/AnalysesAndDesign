@@ -14,9 +14,9 @@ public class LineItem {
 
 
 
-    public LineItem(Product p, int quantity, int price, Order order, ShoppingCart shoppingCart) {
+    public LineItem(String id, Product p, int quantity, int price, Order order, ShoppingCart shoppingCart) {
         this.autoID += 1;
-        this.ID = autoID.toString();
+        this.ID = id;
         this.product = p;
         this.order = order;
         this.shoppingCart = shoppingCart;
@@ -80,5 +80,12 @@ public class LineItem {
 
     public String displayLineItem(){
         return "LineItem \nNo. " + this.ID;
+    }
+
+    public void removeAssociated() {
+        this.shoppingCart = null;
+        this.order = null;
+        this.product.removeLineItem(this);
+        this.product = null;
     }
 }

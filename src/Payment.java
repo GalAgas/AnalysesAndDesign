@@ -11,9 +11,9 @@ public abstract class Payment {
     protected Account account;
     protected Order order;
 
-    public Payment(Account account, Order order, float total) {
+    public Payment(String id, Account account, Order order, float total) {
         this.autoID += 1;
-        this.id = autoID.toString();
+        this.id = id;
         this.account = account;
         this.order = order;
         this.account.addPayment(this);
@@ -50,5 +50,10 @@ public abstract class Payment {
 
     public String displayPaymentId(){
         return "Payment id: "+this.id;
+    }
+
+    public void removeAssociated(){
+        this.account = null;
+        this.order = null;
     }
 }

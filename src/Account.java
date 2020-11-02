@@ -19,7 +19,7 @@ public class Account {
     public Account(String id, String billing_address, WebUser webUser, Customer customer) {
         this.id = id;
         this.billing_address = billing_address;
-        this.shoppingCart = new ShoppingCart(webUser,this);
+        this.shoppingCart = new ShoppingCart(webUser.getLogin_id()+"'s ShoppingCart", webUser,this);
         this.customer = customer;
         orders = new ArrayList<>();
         payments = new HashMap<>();
@@ -115,6 +115,19 @@ public class Account {
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public void removeAssociated(){
+        this.shoppingCart = null;
+        for(Order o : this.orders){
+            o.removeAssociated();
+        }
+        this.orders = null;
+        for(Payment p: this.payments.values()){
+            p.removeAssociated();
+        }
+        this.payments = null;
+        this.customer = null;
     }
 
     @Override

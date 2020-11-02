@@ -1,16 +1,20 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShoppingSystem {
-    private HashMap<String, WebUser> webUsers;
-    private HashMap<String, Supplier> suppliers;
-    private HashMap<String, Product> idsToProducts;
+//    private HashMap<String, WebUser> webUsers;
+//    private HashMap<String, Supplier> suppliers;
+//    private HashMap<String, Product> idsToProducts;
+    private HashMap<String, Object> allObjects;
+    private static Integer autoIncreasingId = 0;
 
     private WebUser currentLoggedIn;
 
     public ShoppingSystem() {
-        this.webUsers = new HashMap<>();
-        this.suppliers = new HashMap<>();
-        this.idsToProducts = new HashMap<>();
+//        this.webUsers = new HashMap<>();
+//        this.suppliers = new HashMap<>();
+//        this.idsToProducts = new HashMap<>();
+        this.allObjects = new HashMap<>();
         this.initializeSystem();
         this.currentLoggedIn = null;
 
@@ -23,7 +27,7 @@ public class ShoppingSystem {
      * @return boolean
      */
     public boolean idValidation(String loginId){
-        return webUsers.containsKey(loginId);
+        return allObjects.containsKey(loginId);
     }
 
     /**
@@ -39,7 +43,10 @@ public class ShoppingSystem {
     public void addUser(String loginId, String password, boolean isPremium, String address,String phone,String email) throws Exception {
         if(idValidation(loginId)) throw new Exception("Id is not valid");
         WebUser newUser = new WebUser(loginId, password, isPremium, address, phone, email);
-        webUsers.put(loginId, newUser);
+        allObjects.put(loginId, newUser);
+        allObjects.put(newUser.getCustomer().getId(), newUser.getCustomer());
+        allObjects.put(newUser.getCustomer().getAccount().getId(), newUser.getCustomer().getAccount());
+        allObjects.put(newUser.getShoppingCart().getID(), newUser.getShoppingCart());
     }
 
     /**
@@ -49,10 +56,13 @@ public class ShoppingSystem {
      */
     public void removeUser(String loginId) throws Exception {
         if(!idValidation(loginId)) throw new Exception("Id is not valid");
-        WebUser user = webUsers.get(loginId);
+        WebUser user = (WebUser)allObjects.get(loginId);
         user.getShoppingCart().setWebUser(null); //Blocks the way to webUser from ShoppingCart
         user.getCustomer().setWebUser(null); //Blocks the way to webUser from Customer
-        webUsers.remove(user.getLogin_id());
+        allObjects.remove(user.getLogin_id());
+        allObjects.remove(user.getCustomer().getId());
+        allObjects.remove(user.getCustomer().getAccount().getId());
+        allObjects.remove(user.getShoppingCart().getID());
     }
 
     /**
@@ -63,8 +73,8 @@ public class ShoppingSystem {
      */
     public void logIn(String loginId, String password) throws Exception {
         if(!idValidation(loginId)) throw new Exception("Id is not valid");
-        if(!webUsers.get(loginId).getPassword().equals(password)) throw new Exception("Incorrect password");
-        this.currentLoggedIn = webUsers.get(loginId);
+        if(!((WebUser)(allObjects.get(loginId))).getPassword().equals(password)) throw new Exception("Incorrect password");
+        this.currentLoggedIn = (WebUser)allObjects.get(loginId);
     }
 
     /**
@@ -78,14 +88,26 @@ public class ShoppingSystem {
     }
 
 
-    public Order makeNewOrder(){
+    public Order makeNewOrder(String premiumAccount) throws Exception {
         if(this.currentLoggedIn == null){
-            //exception
+            throw new Exception("You are not logged in.");
         }
-        return new Order(this.currentLoggedIn.getCustomer().getAccount());
+        Order o = new Order("order"+autoIncreasingId++, this.currentLoggedIn.getCustomer().getAccount());
+        // dict - premiumAccount - products list 1,2,3,...
+        // 1,
+        //PremiumAccount buyFrom = dict.get(premiumAccount);
+        return o;
+
+    }
+    public void displayPremiumProducts(ArrayList<Product> products){
+        for(Product p: products){
+            System.out.println(p);
+        }
     }
     public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
-        LineItem l = new LineItem(pToadd, amount, pToadd.getPrice() * amount, order, this.currentLoggedIn.getShoppingCart());
+        LineItem l = new LineItem("LineItem"+autoIncreasingId++, pToadd, amount, pToadd.getPrice() * amount,
+                order, this.currentLoggedIn.getShoppingCart());
+        allObjects.put(l.getID(), l);
     }
 
 
@@ -101,10 +123,10 @@ public class ShoppingSystem {
         if(!(this.currentLoggedIn.getCustomer().getAccount() instanceof PremiumAccount)){
             // exception!!!
         }
-        if(!this.idsToProducts.containsKey(productName)){
+        if(!this.allObjects.containsKey(productName)){
             //exception no such product in system!!!
         }
-        Product p = this.idsToProducts.get(productName);
+        Product p = (Product)this.allObjects.get(productName);
         if (p.getPremiumAccount() != null){
             //exception product allready connected to another preium account
         }
@@ -114,17 +136,20 @@ public class ShoppingSystem {
 
     }
 
-    public void addProduct(String productName, String productid, Supplier supplier){
-        Product p = new Product(productid, productName, supplier);
-        this.idsToProducts.put(p.getId(), p);
+    public void addProduct(String productName, String productid, String supplierId) throws Exception {
+        if(!idValidation(supplierId) || !(allObjects.get(supplierId) instanceof Supplier)){
+            throw new Exception("The supplier of the product is not valid");
+        }
+        Product p = new Product(productid, productName, (Supplier) (allObjects.get(supplierId)));
+        this.allObjects.put(p.getId(), p);
     }
 
     public void deleteProduct(String productName){
-        if (!this.idsToProducts.containsKey(productName)){
+        if (!this.allObjects.containsKey(productName)){
             //exception product doesnt exist
         }
-        Product p = idsToProducts.get(productName);
-        idsToProducts.remove(productName);
+        Product p = (Product)allObjects.get(productName);
+        allObjects.remove(productName);
 
         p.getPremiumAccount().removeProduct(p);
         p.setPremiumAccount(null);
@@ -148,26 +173,8 @@ public class ShoppingSystem {
      * Displays all current objects
      */
     public void showAllObjects(){
-        for(WebUser wu : webUsers.values()){
+        for(Object wu : allObjects.values()){
             System.out.println(wu);
-            System.out.println(wu.getCustomer());
-            System.out.println(wu.getCustomer().getAccount());
-            System.out.println(wu.getShoppingCart());
-            for(Payment p : wu.getCustomer().getAccount().getPayments().values()){
-                p.displayPaymentId();
-            }
-            for(Order o : wu.getCustomer().getAccount().getOrders()){
-                o.displayOrderNumber();
-            }
-        }
-        for(Supplier supplier : suppliers.values()){
-            System.out.println(supplier);
-            for(Product p: supplier.getProducts()) {
-                System.out.println(p);
-                for(LineItem li : p.getLineItems()){
-                    li.displayLineItem();
-                }
-            }
         }
     }
 
@@ -176,18 +183,10 @@ public class ShoppingSystem {
      * @param id String
      */
     public void showObject(String id){
-        if(webUsers.containsKey(id)){
-            WebUser wu = webUsers.get(id);
-            System.out.println(wu.displayUser());
+        if(allObjects.containsKey(id)){
+            Object o = allObjects.get(id);
+            System.out.println(o);
 
-        }
-        else if(suppliers.containsKey(id)) {
-            Supplier s = suppliers.get(id);
-            System.out.println(s.displaySupplier());
-        }
-        else if(idsToProducts.containsKey(id)) {
-            Product p = (Product) idsToProducts.get(id);
-            System.out.println(p.displayProduct());
         }
     }
 
@@ -197,11 +196,11 @@ public class ShoppingSystem {
      */
     public void initializeSystem(){
         Supplier moshe = new Supplier("123", "Moshe");
-        suppliers.put(moshe.getId(), moshe);
+        allObjects.put(moshe.getId(), moshe);
         Product bamba = new Product("Bamba", "Bamba", moshe);
         Product ramen = new Product("Ramen", "Ramen", moshe);
-        idsToProducts.put(bamba.getId(), bamba);
-        idsToProducts.put(ramen.getId(), ramen);
+        allObjects.put(bamba.getId(), bamba);
+        allObjects.put(ramen.getId(), ramen);
         try {
             addUser("Dani", "Dani123", false,
                     "BGU", "123456", "dani@post.bgu.ac.il");
@@ -210,7 +209,7 @@ public class ShoppingSystem {
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        this.currentLoggedIn = webUsers.get("Dana");
+        this.currentLoggedIn = (WebUser)allObjects.get("Dana");
         linkProductToPrem("Bamba");
     }
 
@@ -222,27 +221,27 @@ public class ShoppingSystem {
         this.currentLoggedIn = currentLoggedIn;
     }
 
-    public HashMap<String, WebUser> getWebUsers() {
-        return webUsers;
-    }
-
-    public void setWebUsers(HashMap<String, WebUser> webUsers) {
-        this.webUsers = webUsers;
-    }
-
-    public HashMap<String, Supplier> getSuppliers() {
-        return suppliers;
-    }
-
-    public void setSuppliers(HashMap<String, Supplier> suppliers) {
-        this.suppliers = suppliers;
-    }
-
-    public HashMap<String, Product> getIdsToProducts() {
-        return idsToProducts;
-    }
-
-    public void setIdsToProducts(HashMap<String, Product> idsToProducts) {
-        this.idsToProducts = idsToProducts;
-    }
+//    public HashMap<String, WebUser> getWebUsers() {
+//        return webUsers;
+//    }
+//
+//    public void setWebUsers(HashMap<String, WebUser> webUsers) {
+//        this.webUsers = webUsers;
+//    }
+//
+//    public HashMap<String, Supplier> getSuppliers() {
+//        return suppliers;
+//    }
+//
+//    public void setSuppliers(HashMap<String, Supplier> suppliers) {
+//        this.suppliers = suppliers;
+//    }
+//
+//    public HashMap<String, Product> getIdsToProducts() {
+//        return idsToProducts;
+//    }
+//
+//    public void setIdsToProducts(HashMap<String, Product> idsToProducts) {
+//        this.idsToProducts = idsToProducts;
+//    }
 }

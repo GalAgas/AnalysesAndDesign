@@ -23,9 +23,9 @@ public class Order {
         return number;
     }
 
-    public Order(Account account) {
+    public Order(String id, Account account) {
         this.autoID += 1;
-        this.number = autoID.toString();
+        this.number = id;
         this.account = account;
         this.payments = new ArrayList<>();
         this.lineItems = new ArrayList<>();
@@ -78,13 +78,15 @@ public class Order {
         }
     }
 
+
+
     public void removeLineItem(LineItem l) {
         this.lineItems.remove(l);
     }
 
     @Override
     public String toString() {
-        String toReturn = "Order No." + number +":\n"
+        String toReturn = "Order: " + number +":\n"
                 + "STATUS: " + this.orderStatus +"\n"
                 + "Account No." + account.getId()+"\n"
                 + "Address: " + this.shipTo + "\n"
@@ -105,5 +107,17 @@ public class Order {
     }
     public String displayOrderNumber(){
         return "Order \nNo." + this.number;
+    }
+
+    public void removeAssociated() {
+        this.account = null;
+        for(Payment p : this.payments){
+            p.removeAssociated();
+        }
+        this.payments = null;
+        for(LineItem li: this.lineItems){
+            li.removeAssociated();
+        }
+        this.lineItems = null;
     }
 }
