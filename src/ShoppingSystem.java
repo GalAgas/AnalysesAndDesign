@@ -186,8 +186,21 @@ public class ShoppingSystem {
         if(allObjects.containsKey(id)){
             Object o = allObjects.get(id);
             System.out.println(o);
-
+            System.out.println("Associated to:");
+            showAssociated(o);
         }
+    }
+
+    public void showAssociated(Object o){
+        if (o instanceof WebUser) ((WebUser) o).showAssociated();
+        else if (o instanceof Customer) ((Customer) o).showAssociated();
+        else if (o instanceof Account) ((Account) o).showAssociated();
+        else if (o instanceof ShoppingCart) ((ShoppingCart) o).showAssociated();
+        else if (o instanceof Order) ((Order) o).showAssociated();
+        else if (o instanceof Payment) ((Payment) o).showAssociated();
+        else if (o instanceof LineItem) ((LineItem) o).showAssociated();
+        else if (o instanceof Product) ((Product) o).showAssociated();
+        else if (o instanceof Supplier) ((Supplier) o).showAssociated();
     }
 
 

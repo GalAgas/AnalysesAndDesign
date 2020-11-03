@@ -104,4 +104,14 @@ public class Product {
         if(this.getLineItems().size() > 1) return details.substring(0, details.length()-2);
         return details;
     }
+
+    public void showAssociated() {
+        if (this.premiumAccount != null) System.out.println(this.premiumAccount);
+        if (this.supplier != null) System.out.println(this.supplier);
+        if (this.lineItems != null){
+            for (LineItem li: this.lineItems){
+                System.out.println(li);
+            }
+        }
+    }
 }

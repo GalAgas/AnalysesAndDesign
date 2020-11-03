@@ -4,7 +4,7 @@ public class Customer {
     private String phone;
     private String email;
 
-    // Associationsssss
+    // Associations
     private WebUser webUser;
     private Account account;
 
@@ -86,4 +86,10 @@ public class Customer {
         this.account.removeAssociated();
         this.account = null;
     }
+
+    public void showAssociated(){
+        if (this.webUser != null) System.out.println(this.webUser);
+        if (this.account != null) System.out.println(this.account);
+    }
+
 }

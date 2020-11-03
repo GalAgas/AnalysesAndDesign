@@ -120,4 +120,18 @@ public class Order {
         }
         this.lineItems = null;
     }
+
+    public void showAssociated() {
+        if (this.account != null) System.out.println(this.account);
+        if (this.lineItems != null){
+            for (LineItem li: this.lineItems){
+                System.out.println(li);
+            }
+        }
+        if (this.payments != null){
+            for (Payment p: this.payments){
+                System.out.println(p);
+            }
+        }
+    }
 }
