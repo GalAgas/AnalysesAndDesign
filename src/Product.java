@@ -15,7 +15,6 @@ public class Product {
     public Product(String id, String name, Supplier supplier) {
         this.id = id;
         this.name = name;
-        this.price = 10;
         this.supplier = supplier;
         this.supplier.addProduct(this);
         this.lineItems = new ArrayList<>();
@@ -73,8 +72,9 @@ public class Product {
     }
 
     //connects prem
-    public void setPremiumAccount(PremiumAccount premiumAccount) {
+    public void setPremiumAccount(PremiumAccount premiumAccount, Integer price) {
         this.premiumAccount = premiumAccount;
+        this.price = price;
     }
 
     //need to connect also from lineItem, !!
