@@ -134,4 +134,20 @@ public class Account {
     public String toString() {
         return "Account: \nID: " + id + ", Name: " + id;
     }
+
+    public void showAssociated() {
+        if (this.customer != null) System.out.println(this.customer);
+        if (this.shoppingCart != null) System.out.println(this.shoppingCart);
+        if (this.payments != null) {
+            for (Payment p : this.payments.values()) {
+                System.out.println(p);
+            }
+        }
+        if (this.orders != null){
+            for (Order o: this.orders){
+                System.out.println(o);
+            }
+        }
+
+    }
 }

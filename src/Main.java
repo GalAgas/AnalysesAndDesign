@@ -1,6 +1,17 @@
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
     // User interface
@@ -84,7 +95,7 @@ public class Main {
 
                 try {
                     shopsys.removeUser(login_id);
-                    System.out.println("Your'e successfully removed!");
+                    System.out.println("You're successfully removed!");
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -109,7 +120,7 @@ public class Main {
 
                 try {
                     shopsys.logIn(login_id, password);
-                    System.out.println("Your'e successfully logged in!");
+                    System.out.println("You're successfully logged in!");
 
                 }
                 catch (Exception e){
@@ -123,9 +134,8 @@ public class Main {
                 String login_id = input.substring(15);
 
                 try {
-                    //don't need to pass the currUser, shopSys already have this attribute
-                    //need to change the method
                     shopsys.logOut(login_id);
+
                     System.out.println("You're successfully logged out!");
                 }
                 catch (Exception e){
@@ -134,25 +144,64 @@ public class Main {
                 }
             }
 
-            else if (input.startsWith("Make order")){
+            else if (input.equals("Make order")){
+                System.out.println("Type the premium's account name: ");
+                String premiumAccount = myObj.nextLine();
+                try {
+                    Order o = shopsys.makeNewOrder(premiumAccount);
 
+                    String choose = "";
+                    while(!choose.equals("DONE")){
+                        System.out.println("Choose product's number: ");
+                        System.out.println("If you don't want to order anymore, type DONE");
+                        shopsys.displayPremiumProducts(premiumAccount);
+                        choose = myObj.nextLine();
+                        if(choose.equals("DONE")) break;
+                        Product chosen = shopsys.chooseProduct(premiumAccount, choose);
+                        System.out.println("Choose the amount: ");
+                        String amount = myObj.nextLine();
+                        if(isNumeric(amount)) {
+                            shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
+                        }
+                        else{
+                            System.out.println("You didn't enter an amount");
+                            continue;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
 
             }
 
             else if (input.startsWith("Display order")){
-                shopsys.DisplayOrder();
+                shopsys.displayOrder();
             }
 
             else if (input.startsWith("Link Product")){
                 String productName;
+                String price;
 
 //                System.out.println("Please enter product's name:");
 //                productName = myObj.nextLine();
 
                 productName = input.substring(13);
 
+                System.out.println("Please enter product's price:");
+                price = myObj.nextLine();
+                if(!isNumeric(price)){
+                    System.out.println("The price isn't a number");
+                    continue;
+                }
+                System.out.println("Price was successfully linked to you");
+
+
                 //need status??? succeed/failed
-                shopsys.linkProductToPrem(productName);
+                try {
+                    shopsys.linkProductToPrem(productName, Integer.parseInt(price));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
 
             }
 
@@ -172,7 +221,6 @@ public class Main {
 
                 try {
                     shopsys.addProduct(productName, productId, supplierId);
-
                     System.out.println("Your product has successfully added!");
 
                 } catch (Exception e) {
@@ -222,6 +270,9 @@ public class Main {
                 System.out.println("Not a valid input!");
             }
         }
+
+
+
 
         /*switch case:
         * case 1:
@@ -309,12 +360,38 @@ public class Main {
 //        try{
 //            ss.addUser("Agasiii", "123", true, "be", "123", "eas");
 //            ss.logIn("Agasiii", "123");
+//            ss.addProduct("Bisli", "Bisli", "123");
+//            ss.linkProductToPrem("Bisli");
 ////            ss.showAllObjects();
+//
+//            ss.logIn("Dani", "Dani123");
+//            ss.makeNewOrder("Agasiii's Account");
+//            Order o = ss.getCurrentLoggedIn().getCustomer().getAccount().getOrders().get(0);
+//            ss.showAllObjects();
+//
+//            System.out.println();
+//            ss.removeUser("Dani");
+//            ss.deleteProduct("Bisli");
+//            ss.showAllObjects();
+//
+//            //makeNewOrder
+//            // Dani
+//            //              price   amount
+//            //1. Bamba -    10          2
+//            //2. Bisli -     5          3
+//            //1 5 10
+//            // new Order -> add Product
+//
+//
 //        }
 //        catch (Exception e){
 //            System.out.println(e.getMessage());
 //        }
 //        ss.showObject("Dani");
+//        System.out.println(ss.makeNewOrder("Dani", "Dani123"));
+//        System.out.println(ss.makeNewOrder("Dani", "Dani123"));
+//        System.out.println(ss.makeNewOrder("Agasiii", "123"));
+
 
 
 

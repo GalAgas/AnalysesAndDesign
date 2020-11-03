@@ -75,4 +75,9 @@ public class WebUser {
         this.setCustomer(null);
         this.setShoppingCart(null);
     }
+
+    public void showAssociated(){
+        if(this.customer != null) System.out.println(this.customer);
+        if(this.shoppingCart != null) System.out.println(this.shoppingCart);
+    }
 }

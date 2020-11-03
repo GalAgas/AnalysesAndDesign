@@ -56,4 +56,9 @@ public abstract class Payment {
         this.account = null;
         this.order = null;
     }
+
+    public void showAssociated() {
+        if (this.account != null) System.out.println(this.account);
+        if (this.order != null) System.out.println(this.order);
+    }
 }

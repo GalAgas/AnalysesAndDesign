@@ -15,7 +15,6 @@ public class Product {
     public Product(String id, String name, Supplier supplier) {
         this.id = id;
         this.name = name;
-        this.price = 10;
         this.supplier = supplier;
         this.supplier.addProduct(this);
         this.lineItems = new ArrayList<>();
@@ -73,8 +72,9 @@ public class Product {
     }
 
     //connects prem
-    public void setPremiumAccount(PremiumAccount premiumAccount) {
+    public void setPremiumAccount(PremiumAccount premiumAccount, Integer price) {
         this.premiumAccount = premiumAccount;
+        this.price = price;
     }
 
     //need to connect also from lineItem, !!
@@ -103,5 +103,15 @@ public class Product {
         }
         if(this.getLineItems().size() > 1) return details.substring(0, details.length()-2);
         return details;
+    }
+
+    public void showAssociated() {
+        if (this.premiumAccount != null) System.out.println(this.premiumAccount);
+        if (this.supplier != null) System.out.println(this.supplier);
+        if (this.lineItems != null){
+            for (LineItem li: this.lineItems){
+                System.out.println(li);
+            }
+        }
     }
 }

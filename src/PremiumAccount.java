@@ -20,7 +20,7 @@ public class PremiumAccount extends Account {
     public void removeAssociated(){
         super.removeAssociated();
         for(Product p: products){
-            p.setPremiumAccount(null);
+            p.setPremiumAccount(null, 0 );
         }
         this.products = null;
     }
@@ -29,6 +29,15 @@ public class PremiumAccount extends Account {
         if (product != null)
         {
             products.remove(product);
+        }
+    }
+
+    public void showAssociated(){
+        super.showAssociated();
+        if (this.products != null){
+            for (Product p: this.products){
+                System.out.println(p);
+            }
         }
     }
 
