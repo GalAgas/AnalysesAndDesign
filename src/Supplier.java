@@ -62,4 +62,12 @@ public class Supplier {
         if(this.products.size() > 1 ) return details.substring(0,details.length()-2);
         return details;
     }
+
+    public void showAssociated() {
+        if (this.products != null){
+            for (Product p: this.products){
+                System.out.println(p);
+            }
+        }
+    }
 }

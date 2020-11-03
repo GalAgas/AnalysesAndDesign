@@ -32,6 +32,15 @@ public class PremiumAccount extends Account {
         }
     }
 
+    public void showAssociated(){
+        super.showAssociated();
+        if (this.products != null){
+            for (Product p: this.products){
+                System.out.println(p);
+            }
+        }
+    }
+
     public ArrayList<Product> getProducts() {
         return products;
     }

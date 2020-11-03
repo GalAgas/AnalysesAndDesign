@@ -88,4 +88,10 @@ public class LineItem {
         this.product.removeLineItem(this);
         this.product = null;
     }
+
+    public void showAssociated() {
+        if (this.shoppingCart != null) System.out.println(this.shoppingCart);
+        if (this.product != null) System.out.println(this.product);
+        if (this.order != null) System.out.println(this.order);
+    }
 }
