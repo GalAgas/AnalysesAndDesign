@@ -50,7 +50,7 @@ public class ShoppingSystem {
     }
 
     /**
-     * Removes a user from the system
+     * Removes a user from the system including all associated objects that can not exist without this user.
      * @param loginId String
      * @throws Exception
      */
@@ -62,6 +62,10 @@ public class ShoppingSystem {
         allObjects.remove(user.getLogin_id());
         allObjects.remove(user.getCustomer().getId());
         allObjects.remove(user.getCustomer().getAccount().getId());
+        ArrayList<Order> orders = user.getCustomer().getAccount().getOrders();
+        for(Order o : orders){
+            allObjects.remove(o.getId());
+        }
         allObjects.remove(user.getShoppingCart().getID());
     }
 
@@ -93,15 +97,25 @@ public class ShoppingSystem {
             throw new Exception("You are not logged in.");
         }
         Order o = new Order("order"+autoIncreasingId++, this.currentLoggedIn.getCustomer().getAccount());
-        // dict - premiumAccount - products list 1,2,3,...
-        // 1,
-        //PremiumAccount buyFrom = dict.get(premiumAccount);
+        allObjects.put(o.getId(), o);
+        if(allObjects.get(premiumAccount) == null){
+            throw new Exception("You can't buy from this Account");
+        }
+        PremiumAccount buyFrom = (PremiumAccount)allObjects.get(premiumAccount);
+//        displayPremiumProducts(buyFrom.getProducts());
+
         return o;
 
     }
-    public void displayPremiumProducts(ArrayList<Product> products){
-        for(Product p: products){
-            System.out.println(p);
+
+    public Product chooseProduct(String premiumAccount, String itemNumber){
+        ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
+        return products.get(Integer.parseInt(itemNumber));
+    }
+    public void displayPremiumProducts(String premiumAccount){
+        ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
+        for(int i=0;i<products.size();i++){
+            System.out.println(i+". " + products.get(i));
         }
     }
     public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
@@ -111,7 +125,7 @@ public class ShoppingSystem {
     }
 
 
-    public void DisplayOrder(){
+    public void displayOrder(){
         Account cur_account = this.currentLoggedIn.getCustomer().getAccount();
         Order o = cur_account.getOrders().get(cur_account.getOrders().size()-1);
 
@@ -119,19 +133,19 @@ public class ShoppingSystem {
 
     }
 
-    public void linkProductToPrem(String productName){
-        if(!(this.currentLoggedIn.getCustomer().getAccount() instanceof PremiumAccount)){
-            // exception!!!
+    public void linkProductToPrem(String productName, Integer price) throws Exception {
+        if(this.currentLoggedIn == null || !(this.currentLoggedIn.getCustomer().getAccount() instanceof PremiumAccount)){
+            throw new Exception("There's no logged in user or current user isn't Premium");
         }
         if(!this.allObjects.containsKey(productName)){
-            //exception no such product in system!!!
+            throw new Exception("Product doesn't exist in the system");
         }
         Product p = (Product)this.allObjects.get(productName);
-        if (p.getPremiumAccount() != null){
-            //exception product allready connected to another preium account
+        if (p.getPremiumAccount() != null && p.getPremiumAccount() != this.currentLoggedIn.getCustomer().getAccount()){
+            throw new Exception("Given product already exists to another Premium user");
         }
         PremiumAccount a = (PremiumAccount) this.currentLoggedIn.getCustomer().getAccount();
-        p.setPremiumAccount(a);
+        p.setPremiumAccount(a, price);
         a.addProduct(p);
 
     }
@@ -151,8 +165,10 @@ public class ShoppingSystem {
         Product p = (Product)allObjects.get(productName);
         allObjects.remove(productName);
 
-        p.getPremiumAccount().removeProduct(p);
-        p.setPremiumAccount(null);
+        if(p.getPremiumAccount() != null) {
+            p.getPremiumAccount().removeProduct(p);
+        }
+        p.setPremiumAccount(null, 0);
 
         p.getSupplier().removeProduct(p);
         p.setSupplier(null);
@@ -223,7 +239,12 @@ public class ShoppingSystem {
             System.out.println(e.getMessage());
         }
         this.currentLoggedIn = (WebUser)allObjects.get("Dana");
-        linkProductToPrem("Bamba");
+        try{
+            linkProductToPrem("Bamba", 3);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public WebUser getCurrentLoggedIn() {
