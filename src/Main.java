@@ -30,21 +30,20 @@ public class Main {
             String input = myObj.nextLine();  // Read user input
 
             if (input.startsWith("Add WebUser")){
-                String isPrem;
                 String login_id;
                 String password;
+                String isPrem;
 
                 String address;
                 String phone;
                 String email;
 
-                //if getting login_id throgh input
-//                String log = input.substring(12);
-//                System.out.println(log);
+                //if getting login_id through input
+                login_id = input.substring(12);
 
-                //if getting login_id throgh second input from user
-                System.out.println("Please enter login ID:");
-                login_id = myObj.nextLine();
+                //if getting login_id through second input from user
+//                System.out.println("Please enter login ID:");
+//                login_id = myObj.nextLine();
 
                 System.out.println("Please enter password:");
                 password = myObj.nextLine();
@@ -60,7 +59,7 @@ public class Main {
                 }
                 else {
                     System.out.println("not a valid input!");
-                    System.out.println("making you not premium!");
+                    System.out.println("making you not premium");
                     isPremium = false;
                 }
 
@@ -87,9 +86,12 @@ public class Main {
             else if (input.startsWith("Remove WebUser")){
                 String login_id;
 
-                //if getting login_id throgh second input from user
-                System.out.println("Please enter login ID:");
-                login_id = myObj.nextLine();
+                //if getting login_id through input
+                login_id = input.substring(15);
+
+                //if getting login_id through second input from user
+//                System.out.println("Please enter login ID:");
+//                login_id = myObj.nextLine();
 
                 try {
                     shopsys.removeUser(login_id);
@@ -106,8 +108,11 @@ public class Main {
                 String login_id;
                 String password;
 
-                System.out.println("Please enter your login ID:");
-                login_id = myObj.nextLine();
+//                System.out.println("Please enter your login ID:");
+//                login_id = myObj.nextLine();
+
+                //if getting login_id through input
+                login_id = input.substring(14);
 
                 System.out.println("Please enter your password:");
                 password = myObj.nextLine();
@@ -122,13 +127,15 @@ public class Main {
                     System.out.println(e.getMessage());
                     System.out.println("Please try again.");
                 }
-                }
+            }
 
             else if (input.startsWith("Logout WebUser")){
+
+                String login_id = input.substring(15);
+
                 try {
-                    //don't need to pass the currUser, shopSys already have this attribute
-                    //need to change the method
-                    shopsys.logOut(shopsys.getCurrentLoggedIn().getLogin_id());
+                    shopsys.logOut(login_id);
+
                     System.out.println("You're successfully logged out!");
                 }
                 catch (Exception e){
@@ -175,8 +182,10 @@ public class Main {
                 String productName;
                 String price;
 
-                System.out.println("Please enter product's name:");
-                productName = myObj.nextLine();
+//                System.out.println("Please enter product's name:");
+//                productName = myObj.nextLine();
+
+                productName = input.substring(13);
 
                 System.out.println("Please enter product's price:");
                 price = myObj.nextLine();
@@ -210,25 +219,23 @@ public class Main {
                 System.out.println("Please enter product's name:");
                 productName = myObj.nextLine();
 
-                //need to change method's parameter supplier Id instead of supplier's instance
-                //surrounds with try&catch
                 try {
                     shopsys.addProduct(productName, productId, supplierId);
+                    System.out.println("Your product has successfully added!");
+
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    e.getMessage();
+                    System.out.println("Product not added. Please try again.");
                 }
-
-                System.out.println("Your product has successfully added!");
-
-
-                System.out.println("The product not added. Please try again.");
             }
 
             else if (input.startsWith("Delete Product")){
                 String productName;
 
-                System.out.println("Please enter product's name:");
-                productName = myObj.nextLine();
+//                System.out.println("Please enter product's name:");
+//                productName = myObj.nextLine();
+
+                productName = input.substring(15);
 
                 //need status??? succeed/failed
                 //surrounds with try&catch
@@ -244,8 +251,10 @@ public class Main {
             else if (input.startsWith("ShowObjectId")){
                 String objectId;
 
-                System.out.println("Please enter object's ID:");
-                objectId = myObj.nextLine();
+//                System.out.println("Please enter object's ID:");
+//                objectId = myObj.nextLine();
+
+                objectId = input.substring(13);
 
                 //need status??? succeed/failed
                 //surrounds with try&catch -object doesn't exist
