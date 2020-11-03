@@ -68,4 +68,11 @@ public class WebUser {
         return this.toString() + ", Password: " + this.password + ", State: " + this.state + "\n" +
                 "Customer: " + this.getCustomer().getId()  + ", Shopping Cart: " + this.getShoppingCart().getID();
     }
+
+    public void removeAssociated(){
+        this.customer.removeAssociated();
+        this.shoppingCart.removeAssociated();
+        this.setCustomer(null);
+        this.setShoppingCart(null);
+    }
 }

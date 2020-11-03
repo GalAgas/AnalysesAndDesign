@@ -1,8 +1,8 @@
 public class ImmediatePayment extends Payment{
     private boolean phoneConfirmation;
 
-    public ImmediatePayment(Account account, Order order, float total) {
-        super(account, order, total);
+    public ImmediatePayment(String id,Account account, Order order, float total) {
+        super(id, account, order, total);
     }
 
     @Override

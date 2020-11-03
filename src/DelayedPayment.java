@@ -3,8 +3,8 @@ import java.util.Date;
 public class DelayedPayment extends Payment {
     private Date paymentDate;
 
-    public DelayedPayment(Account account, Order order, float total) {
-        super(account, order, total);
+    public DelayedPayment(String id, Account account, Order order, float total) {
+        super(id, account, order, total);
     }
 
     @Override

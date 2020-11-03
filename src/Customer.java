@@ -9,16 +9,16 @@ public class Customer {
     private Account account;
 
     public Customer(String address, String phone, String email, WebUser webUser, boolean isPremium) {
-        this.id = webUser.getLogin_id();
+        this.id = webUser.getLogin_id()+"'s Customer";
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.webUser = webUser;
         if (isPremium){
-            this.account = new PremiumAccount(this.id, address, webUser, this);
+            this.account = new PremiumAccount(webUser.getLogin_id()+"'s Account", address, webUser, this);
         }
         else {
-            this.account = new Account(this.id, address, webUser, this);
+            this.account = new Account(webUser.getLogin_id()+"'s Account", address, webUser, this);
         }
 
     }
@@ -79,5 +79,11 @@ public class Customer {
     public String displayCustomer(){
         return this.toString() + ", Address: " + this.address + ", Phone: " + this.phone
                 + ", Email: " + this.email;
+    }
+
+    public void removeAssociated() {
+        this.webUser = null;
+        this.account.removeAssociated();
+        this.account = null;
     }
 }

@@ -16,9 +16,9 @@ public class ShoppingCart {
         this.webUser = webUser;
     }
 
-    public ShoppingCart(WebUser webUser, Account account) {
+    public ShoppingCart(String id, WebUser webUser, Account account) {
         this.autoID += 1;
-        this.ID = autoID.toString();
+        this.ID = id;
         this.webUser = webUser;
         this.account = account;
         this.lineItems = new ArrayList<>();
@@ -39,6 +39,7 @@ public class ShoppingCart {
 
     public void removeLineItem(LineItem lineItem) {
         this.lineItems.remove(lineItem);
+    }
 
     @Override
     public String toString() {
@@ -56,5 +57,14 @@ public class ShoppingCart {
 
     public ArrayList<LineItem> getLineItems() {
         return lineItems;
+    }
+
+    public void removeAssociated() {
+        this.webUser = null;
+        this.account = null;
+        for(LineItem li: this.lineItems){
+            li.removeAssociated();
+        }
+        this.lineItems = null;
     }
 }
