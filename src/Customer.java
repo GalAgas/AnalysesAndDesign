@@ -76,7 +76,7 @@ public class Customer {
         return "Customer: \n\tID: " + id + ", Name: " + id;
     }
 
-    public String displayCustomer(){
+    public String showAllDetails(){
         return this.toString() + ", Address: " + this.address + ", Phone: " + this.phone
                 + ", Email: " + this.email;
     }

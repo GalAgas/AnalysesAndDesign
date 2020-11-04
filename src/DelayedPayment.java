@@ -9,8 +9,7 @@ public class DelayedPayment extends Payment {
     }
 
     @Override
-    public String toString() {
-        return super.toString() +
-                ", paymentDate=" + paymentDate;
+    public String showAllDetails() {
+        return super.showAllDetails() + ", Payment date: "+this.paymentDate;
     }
 }

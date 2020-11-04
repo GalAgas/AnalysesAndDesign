@@ -150,4 +150,9 @@ public class Account {
         }
 
     }
+
+    public String showAllDetails(){
+        return this.toString()+", Address: " + this.billing_address + ", Date opened: " + this.open +
+                ", Date closed: " + this.closed + ", Balance: "+this.balance;
+    }
 }

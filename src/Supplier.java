@@ -54,13 +54,8 @@ public class Supplier {
                 ", name: " + name;
     }
 
-    public String displaySupplier(){
-        String details =  this.toString() + "\nProducts:\n";
-        for(Product p: this.products){
-            details += p.getName() + ", ";
-        }
-        if(this.products.size() > 1 ) return details.substring(0,details.length()-2);
-        return details;
+    public String showAllDetails(){
+        return this.toString();
     }
 
     public void showAssociated() {

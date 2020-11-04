@@ -112,9 +112,6 @@ public class ShoppingSystem {
         if(allObjects.get(premiumAccount) == null){
             throw new Exception("You can't buy from this Account");
         }
-        PremiumAccount buyFrom = (PremiumAccount)allObjects.get(premiumAccount);
-//        displayPremiumProducts(buyFrom.getProducts());
-
         return o;
 
     }
@@ -212,12 +209,15 @@ public class ShoppingSystem {
      * Displays a specific object
      * @param id String
      */
-    public void showObject(String id){
+    public void showObject(String id) throws Exception {
         if(allObjects.containsKey(id)){
             Object o = allObjects.get(id);
-            System.out.println(o);
+            System.out.println(showAllDetails(o));
             System.out.println("Associated to:");
             showAssociated(o);
+        }
+        else{
+            throw new Exception("Given id is invalid, there is no such object in our system");
         }
     }
 
@@ -231,6 +231,19 @@ public class ShoppingSystem {
         else if (o instanceof LineItem) ((LineItem) o).showAssociated();
         else if (o instanceof Product) ((Product) o).showAssociated();
         else if (o instanceof Supplier) ((Supplier) o).showAssociated();
+    }
+
+    public String showAllDetails(Object o){
+        if (o instanceof WebUser) return ((WebUser) o).showAllDetails();
+        else if (o instanceof Customer) return ((Customer) o).showAllDetails();
+        else if (o instanceof Account) return ((Account) o).showAllDetails();
+        else if (o instanceof ShoppingCart) return ((ShoppingCart) o).showAllDetails();
+        else if (o instanceof Order) return ((Order) o).showAllDetails();
+        else if (o instanceof Payment) return ((Payment) o).showAllDetails();
+        else if (o instanceof LineItem) return ((LineItem) o).showAllDetails();
+        else if (o instanceof Product) return ((Product) o).showAllDetails();
+        else if (o instanceof Supplier) return ((Supplier) o).showAllDetails();
+        return null;
     }
 
 
@@ -285,6 +298,14 @@ public class ShoppingSystem {
 
 
 
+    }
+
+    public void deleteWrongOrder(Order o) {
+        allObjects.remove(o.getId());
+        for(LineItem li: o.getLineItems()){
+            allObjects.remove(li.getID());
+            li.setOrder(null);
+        }
     }
 
 //    public HashMap<String, WebUser> getWebUsers() {

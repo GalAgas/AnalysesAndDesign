@@ -48,8 +48,8 @@ public abstract class Payment {
         return "Payment:\n\tID: "+this.id;
     }
 
-    public String displayPaymentId(){
-        return "Payment id: "+this.id +", paid at " +this.paid
+    public String showAllDetails(){
+        return this.toString() +", paid at " +this.paid
                 + ", Total paid: "+this.total+", Details: "+this.details;
 
     }

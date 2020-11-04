@@ -92,17 +92,8 @@ public class Product {
         return "Product: \n\tID: " + id + ", name: " + name;
     }
 
-    public String displayProduct(){
-        String details = this.toString() + "\nSupplier:\n";
-        details+=this.supplier.getName() +"\n";
-        if(this.premiumAccount != null){
-            details += this.premiumAccount.getId() + "\n";
-        }
-        for(LineItem li: this.getLineItems()){
-            details+= li.getID() + ", ";
-        }
-        if(this.getLineItems().size() > 1) return details.substring(0, details.length()-2);
-        return details;
+    public String showAllDetails(){
+        return this.toString();
     }
 
     public void showAssociated() {

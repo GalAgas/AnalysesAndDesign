@@ -51,7 +51,7 @@ public class ShoppingCart {
         return ID;
     }
 
-    public String displayCart(){
+    public String showAllDetails(){
         return this.toString() + "Created at: " + this.created;
     }
 
