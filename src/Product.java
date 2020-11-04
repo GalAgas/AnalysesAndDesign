@@ -89,7 +89,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product: \nProduct ID: " + id + ", name: " + name;
+        return "Product: \n\tID: " + id + ", name: " + name;
     }
 
     public String displayProduct(){

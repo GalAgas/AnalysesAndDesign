@@ -49,8 +49,8 @@ public class Supplier {
 
     @Override
     public String toString() {
-        return "Supplier" + "\n"+
-                "id: " + id +
+        return "Supplier:\n"+
+                "\tID: " + id +
                 ", name: " + name;
     }
 

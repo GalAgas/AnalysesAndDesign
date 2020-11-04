@@ -44,6 +44,7 @@ public class Order {
     public void addPayment(Payment payment){
         payments.add(payment);
         this.orderStatus = OrderStatus.Hold; // change the status of the order
+        this.getAccount().setBalance(this.account.getBalance() - payment.getTotal());
         paid += payment.getTotal();
         if (paid == this.total){ // if the total amount was paid then close the order
             this.orderStatus = OrderStatus.Closed;
@@ -65,6 +66,10 @@ public class Order {
         return total;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
     /**
      * adds new line item to line items list only if doesn't belong to other order
      * and if the order wasn't closed
@@ -82,6 +87,7 @@ public class Order {
 
     public void removeLineItem(LineItem l) {
         this.lineItems.remove(l);
+        this.total-=l.getPrice();
     }
 
     @Override

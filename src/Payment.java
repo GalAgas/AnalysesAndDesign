@@ -37,6 +37,7 @@ public abstract class Payment {
         if (topay <= this.order.getTotal()) {
             this.total = topay;
             this.order.addPayment(this);
+            this.account.addPayment(this);
         }
 
     }
@@ -44,12 +45,13 @@ public abstract class Payment {
 
     @Override
     public String toString() {
-        return "Payment id: "+this.id +", paid at " +this.paid
-                + ", Total paid: "+this.total+", Details: "+this.details;
+        return "Payment:\n\tID: "+this.id;
     }
 
     public String displayPaymentId(){
-        return "Payment id: "+this.id;
+        return "Payment id: "+this.id +", paid at " +this.paid
+                + ", Total paid: "+this.total+", Details: "+this.details;
+
     }
 
     public void removeAssociated(){

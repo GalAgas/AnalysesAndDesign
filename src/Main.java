@@ -146,7 +146,7 @@ public class Main {
 
             else if (input.equals("Make order")){
                 System.out.println("Type the premium's account name: ");
-                String premiumAccount = myObj.nextLine();
+                String premiumAccount = myObj.nextLine() + "'s Account";
                 try {
                     Order o = shopsys.makeNewOrder(premiumAccount);
 
@@ -166,6 +166,23 @@ public class Main {
                         else{
                             System.out.println("You didn't enter an amount");
                             continue;
+                        }
+                    }
+                    System.out.println("Do you want to pay now? y/n");
+                    String toPay = myObj.nextLine();
+                    if (!toPay.equals("y")){
+                        continue;
+                    }
+                    else{
+                        String paymentType = "";
+                        while (!paymentType.equals("3")) {
+                            System.out.println("Choose your payment:\n\tFor ImmediatePayment press 1\n\tFor DelayedPayment press 2\n\t" +
+                                    "Press 3 to cancel");
+                            paymentType = myObj.nextLine();
+                            if (paymentType.equals("3")) continue;
+                            System.out.println("How much do you want to pay?");
+                            toPay = myObj.nextLine();
+                            shopsys.paymentMethod(o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
                         }
                     }
                 } catch (Exception e) {
@@ -193,15 +210,17 @@ public class Main {
                     System.out.println("The price isn't a number");
                     continue;
                 }
-                System.out.println("Price was successfully linked to you");
+
 
 
                 //need status??? succeed/failed
                 try {
                     shopsys.linkProductToPrem(productName, Integer.parseInt(price));
+                    System.out.println("Product was successfully linked.");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+
 
             }
 
@@ -212,6 +231,11 @@ public class Main {
 
                 System.out.println("Dear supplier, please enter your ID:");
                 supplierId = myObj.nextLine();
+
+                if(!shopsys.idValidation(supplierId)){
+                    System.out.println("Not valid id.");
+                    continue;
+                }
 
                 System.out.println("Please enter product's ID:");
                 productId = myObj.nextLine();
@@ -231,15 +255,15 @@ public class Main {
 
             else if (input.startsWith("Delete Product")){
                 String productName;
-
-//                System.out.println("Please enter product's name:");
-//                productName = myObj.nextLine();
-
                 productName = input.substring(15);
 
-                //need status??? succeed/failed
-                //surrounds with try&catch
-                shopsys.deleteProduct(productName);
+                try {
+                    shopsys.deleteProduct(productName);
+                    System.out.println("Product was successfully deleted.");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
             }
 
             else if (input.startsWith("ShowAllObjects")){
