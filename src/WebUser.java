@@ -61,7 +61,7 @@ public class WebUser {
 
     @Override
     public String toString() {
-        return "User: \nID: " + login_id + ", Name: " + login_id;
+        return "User: \n\tID: " + login_id + ", Name: " + login_id;
     }
 
     public String displayUser(){

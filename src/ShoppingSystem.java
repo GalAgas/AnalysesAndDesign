@@ -63,8 +63,16 @@ public class ShoppingSystem {
         allObjects.remove(user.getCustomer().getId());
         allObjects.remove(user.getCustomer().getAccount().getId());
         ArrayList<Order> orders = user.getCustomer().getAccount().getOrders();
+        HashMap<String,Payment> payments = user.getCustomer().getAccount().getPayments();
+        ArrayList<LineItem> userLineItems = user.getShoppingCart().getLineItems();
         for(Order o : orders){
             allObjects.remove(o.getId());
+        }
+        for(Payment p: payments.values()){
+            allObjects.remove(p.getId());
+        }
+        for(LineItem li: userLineItems){
+            allObjects.remove(li.getID());
         }
         allObjects.remove(user.getShoppingCart().getID());
     }
@@ -96,6 +104,9 @@ public class ShoppingSystem {
         if(this.currentLoggedIn == null){
             throw new Exception("You are not logged in.");
         }
+        if (!(allObjects.get(premiumAccount) instanceof PremiumAccount)){
+            throw new Exception("This account isn't premium");
+        }
         Order o = new Order("order"+autoIncreasingId++, this.currentLoggedIn.getCustomer().getAccount());
         allObjects.put(o.getId(), o);
         if(allObjects.get(premiumAccount) == null){
@@ -122,6 +133,8 @@ public class ShoppingSystem {
         LineItem l = new LineItem("LineItem"+autoIncreasingId++, pToadd, amount, pToadd.getPrice() * amount,
                 order, this.currentLoggedIn.getShoppingCart());
         allObjects.put(l.getID(), l);
+        Account a = order.getAccount();
+        a.setBalance(a.getBalance() + l.getPrice());
     }
 
 
@@ -158,9 +171,9 @@ public class ShoppingSystem {
         this.allObjects.put(p.getId(), p);
     }
 
-    public void deleteProduct(String productName){
+    public void deleteProduct(String productName) throws Exception {
         if (!this.allObjects.containsKey(productName)){
-            //exception product doesnt exist
+            throw new Exception("Product doesn't exist.");
         }
         Product p = (Product)allObjects.get(productName);
         allObjects.remove(productName);
@@ -181,6 +194,7 @@ public class ShoppingSystem {
             l.setShoppingCart(null);
 
             l.setProduct(null);
+            allObjects.remove(l.getID());
         }
 
     }
@@ -253,6 +267,24 @@ public class ShoppingSystem {
 
     public void setCurrentLoggedIn(WebUser currentLoggedIn) {
         this.currentLoggedIn = currentLoggedIn;
+    }
+
+    public void paymentMethod(Order o, Account account, String paymentType ,String toPay) {
+        Payment p = null;
+        float pay = Float.valueOf(toPay);
+        String id = "payment " + this.autoIncreasingId++;
+        if (paymentType.equals("1")){
+            p = new ImmediatePayment(id,account,o,pay);
+        }
+        else if (paymentType.equals("2")){
+            p = new DelayedPayment(id,account,o,pay);
+        }
+        if (p != null){
+            allObjects.put(p.getId(),p);
+        }
+
+
+
     }
 
 //    public HashMap<String, WebUser> getWebUsers() {

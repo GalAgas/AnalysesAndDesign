@@ -73,7 +73,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer: \nID: " + id + ", Name: " + id;
+        return "Customer: \n\tID: " + id + ", Name: " + id;
     }
 
     public String displayCustomer(){

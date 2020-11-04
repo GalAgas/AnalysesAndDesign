@@ -71,7 +71,7 @@ public class LineItem {
 
     @Override
     public String toString() {
-        return product.toString() +" quantity:" + this.quantity + ", price: "+ this.price;
+        return "Line Item:\n\tProduct's name: " + this.product.getName() + ", quantity: " + this.quantity + ", price: "+ this.price;
     }
 
     public String getID() {

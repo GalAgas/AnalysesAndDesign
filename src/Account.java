@@ -8,7 +8,7 @@ public class Account {
     private boolean is_closed;
     private Date open;
     private Date closed;
-    private int balance;
+    private float balance;
 
     // Associations
     private HashMap<String, Payment> payments;
@@ -85,11 +85,11 @@ public class Account {
         this.closed = closed;
     }
 
-    public int getBalance() {
+    public float getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(float balance) {
         this.balance = balance;
     }
 
@@ -132,7 +132,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account: \nID: " + id + ", Name: " + id;
+        return "Account: \n\tID: " + id + ", Name: " + id;
     }
 
     public void showAssociated() {
