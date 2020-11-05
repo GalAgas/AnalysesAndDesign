@@ -46,8 +46,9 @@ public class Order {
         this.orderStatus = OrderStatus.Hold; // change the status of the order
         this.getAccount().setBalance(this.account.getBalance() - payment.getTotal());
         paid += payment.getTotal();
-        if (paid == this.total){ // if the total amount was paid then close the order
+        if (paid == this.total){ // if the total amount was paid then close the order and ship it to the customer.
             this.orderStatus = OrderStatus.Closed;
+            this.shipped = new Date();
         }
     }
 
@@ -83,36 +84,25 @@ public class Order {
         }
     }
 
-
+    public ArrayList<LineItem> getLineItems() {
+        return lineItems;
+    }
 
     public void removeLineItem(LineItem l) {
         this.lineItems.remove(l);
         this.total-=l.getPrice();
     }
 
-    @Override
-    public String toString() {
-        String toReturn = "Order: " + number +":\n"
-                + "STATUS: " + this.orderStatus +"\n"
-                + "Account No." + account.getId()+"\n"
-                + "Address: " + this.shipTo + "\n"
-                + "Ordered in " + this.ordered+"\n"
-                + "Shipping date: " + this.shipped + "\n"
-                + "Products:\n";
-        for (LineItem li: lineItems){
-            toReturn += li.toString()+"\n";
-        }
-        toReturn += "Total cost: " + this.total + "\n"
-                    + "Payments:\n";
-        for (Payment p: payments){
-            toReturn += p.toString()+"\n";
-        }
-        toReturn += "Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n";
-        return toReturn;
-
+    public String showAllDetails() {
+        return "Order:\n\t " + "Order number: " + number + ", Status: " + this.orderStatus
+                + ", Account: " + account.getId() + ", Address: " + this.shipTo
+                + ", Ordered in: " + this.ordered + ", Shipping date: " + this.shipped +
+                "\n\tTotal cost: " + this.total + ", Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n";
     }
-    public String displayOrderNumber(){
-        return "Order \nNo." + this.number;
+
+    @Override
+    public String toString(){
+        return "Order:\n\tOrder Number: " + this.number;
     }
 
     public void removeAssociated() {

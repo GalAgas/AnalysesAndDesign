@@ -7,8 +7,7 @@ public class ImmediatePayment extends Payment{
     }
 
     @Override
-    public String toString() {
-        return super.toString()+
-                ", phoneConfirmation=" + phoneConfirmation;
+    public String showAllDetails() {
+        return super.showAllDetails() + ", Phone confirmed: " + this.phoneConfirmation;
     }
 }

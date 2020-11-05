@@ -64,9 +64,8 @@ public class WebUser {
         return "User: \n\tID: " + login_id + ", Name: " + login_id;
     }
 
-    public String displayUser(){
-        return this.toString() + ", Password: " + this.password + ", State: " + this.state + "\n" +
-                "Customer: " + this.getCustomer().getId()  + ", Shopping Cart: " + this.getShoppingCart().getID();
+    public String showAllDetails(){
+        return this.toString() + ", Password: " + this.password + ", State: " + this.state;
     }
 
     public void removeAssociated(){

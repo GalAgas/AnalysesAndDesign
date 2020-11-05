@@ -69,17 +69,17 @@ public class LineItem {
         isOrdered = ordered;
     }
 
-    @Override
-    public String toString() {
-        return "Line Item:\n\tProduct's name: " + this.product.getName() + ", quantity: " + this.quantity + ", price: "+ this.price;
+    public String showAllDetails() {
+        return this.toString() + ", quantity: " + this.quantity + ", price: "+ this.price;
     }
 
     public String getID() {
         return ID;
     }
 
-    public String displayLineItem(){
-        return "LineItem \nNo. " + this.ID;
+    @Override
+    public String toString(){
+        return "LineItem:\n\tNo. " + this.ID+ ", Product's name: "+this.product.getName();
     }
 
     public void removeAssociated() {

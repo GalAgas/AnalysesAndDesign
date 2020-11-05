@@ -1,5 +1,3 @@
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -29,7 +27,7 @@ public class Main {
             System.out.println("Please type a command:");
             String input = myObj.nextLine();  // Read user input
 
-            if (input.startsWith("Add WebUser")){
+            if (input.startsWith("Add WebUser") && input.length() > 11){
                 String login_id;
                 String password;
                 String isPrem;
@@ -41,14 +39,10 @@ public class Main {
                 //if getting login_id through input
                 login_id = input.substring(12);
 
-                //if getting login_id through second input from user
-//                System.out.println("Please enter login ID:");
-//                login_id = myObj.nextLine();
-
-                System.out.println("Please enter password:");
+                System.out.println("Please enter a password:");
                 password = myObj.nextLine();
 
-                System.out.println("Premium accout? y/n:");
+                System.out.println("Premium account? y/n:");
                 isPrem = myObj.nextLine();
                 boolean isPremium;
                 if (isPrem.equals("y")){
@@ -58,24 +52,24 @@ public class Main {
                     isPremium = false;
                 }
                 else {
-                    System.out.println("not a valid input!");
-                    System.out.println("making you not premium");
+                    System.out.println("Not a valid input!");
+                    System.out.println("Making you not premium");
                     isPremium = false;
                 }
 
-                System.out.println("Please enter address:");
+                System.out.println("Please enter an address:");
                 address = myObj.nextLine();
 
-                System.out.println("Please enter phone:");
+                System.out.println("Please enter a phone:");
                 phone = myObj.nextLine();
 
-                System.out.println("Please enter email:");
+                System.out.println("Please enter an email:");
                 email = myObj.nextLine();
 
                 try{
                     shopsys.addUser(login_id, password, isPremium, address, phone, email);
 
-                    System.out.println("Congratulations! You're successfully added!");
+                    System.out.println("Congratulations! You have successfully added!");
                 }
                 catch (Exception e){
                     System.out.println(e.getMessage());
@@ -83,15 +77,11 @@ public class Main {
                 }
             }
 
-            else if (input.startsWith("Remove WebUser")){
+            else if (input.startsWith("Remove WebUser") && input.length() > 14){
                 String login_id;
 
                 //if getting login_id through input
                 login_id = input.substring(15);
-
-                //if getting login_id through second input from user
-//                System.out.println("Please enter login ID:");
-//                login_id = myObj.nextLine();
 
                 try {
                     shopsys.removeUser(login_id);
@@ -104,12 +94,10 @@ public class Main {
 
             }
 
-            else if (input.startsWith("Login WebUser")){
+            else if (input.startsWith("Login WebUser") && input.length() > 13){
                 String login_id;
                 String password;
 
-//                System.out.println("Please enter your login ID:");
-//                login_id = myObj.nextLine();
 
                 //if getting login_id through input
                 login_id = input.substring(14);
@@ -129,7 +117,7 @@ public class Main {
                 }
             }
 
-            else if (input.startsWith("Logout WebUser")){
+            else if (input.startsWith("Logout WebUser") && input.length() > 14){
 
                 String login_id = input.substring(15);
 
@@ -145,20 +133,27 @@ public class Main {
             }
 
             else if (input.equals("Make order")){
-                System.out.println("Type the premium's account name: ");
+                System.out.println("Type the premium user's account name: ");
                 String premiumAccount = myObj.nextLine() + "'s Account";
                 try {
                     Order o = shopsys.makeNewOrder(premiumAccount);
 
                     String choose = "";
-                    while(!choose.equals("DONE")){
-                        System.out.println("Choose product's number: ");
-                        System.out.println("If you don't want to order anymore, type DONE");
+                    boolean orderDeleted = false;
+                    while(!choose.equals("Done")){
+                        System.out.println("Choose product's number as shown below: ");
+                        System.out.println("If you don't want to order anymore, type 'Done' ");
                         shopsys.displayPremiumProducts(premiumAccount);
                         choose = myObj.nextLine();
-                        if(choose.equals("DONE")) break;
+                        if(choose.equals("Done")) break;
+                        if(!isNumeric(choose)){
+                            System.out.println("You've entered a wrong number, you should make a new order!");
+                            shopsys.deleteWrongOrder(o);
+                            orderDeleted = true;
+                            break;
+                        }
                         Product chosen = shopsys.chooseProduct(premiumAccount, choose);
-                        System.out.println("Choose the amount: ");
+                        System.out.println("Choose the amount that you want to purchase: ");
                         String amount = myObj.nextLine();
                         if(isNumeric(amount)) {
                             shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
@@ -168,6 +163,8 @@ public class Main {
                             continue;
                         }
                     }
+                    if(orderDeleted) continue;
+                    System.out.println("The price is: " + o.getTotal());
                     System.out.println("Do you want to pay now? y/n");
                     String toPay = myObj.nextLine();
                     if (!toPay.equals("y")){
@@ -176,8 +173,8 @@ public class Main {
                     else{
                         String paymentType = "";
                         while (!paymentType.equals("3")) {
-                            System.out.println("Choose your payment:\n\tFor ImmediatePayment press 1\n\tFor DelayedPayment press 2\n\t" +
-                                    "Press 3 to cancel");
+                            System.out.println("Choose your payment:\n\tFor ImmediatePayment press '1'\n\tFor DelayedPayment press '2'\n\t" +
+                                    "Press '3' when you're done");
                             paymentType = myObj.nextLine();
                             if (paymentType.equals("3")) continue;
                             System.out.println("How much do you want to pay?");
@@ -199,9 +196,6 @@ public class Main {
                 String productName;
                 String price;
 
-//                System.out.println("Please enter product's name:");
-//                productName = myObj.nextLine();
-
                 productName = input.substring(13);
 
                 System.out.println("Please enter product's price:");
@@ -211,17 +205,12 @@ public class Main {
                     continue;
                 }
 
-
-
-                //need status??? succeed/failed
                 try {
                     shopsys.linkProductToPrem(productName, Integer.parseInt(price));
                     System.out.println("Product was successfully linked.");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-
-
             }
 
             else if (input.startsWith("Add Product")){
@@ -246,7 +235,6 @@ public class Main {
                 try {
                     shopsys.addProduct(productName, productId, supplierId);
                     System.out.println("Your product has successfully added!");
-
                 } catch (Exception e) {
                     e.getMessage();
                     System.out.println("Product not added. Please try again.");
@@ -256,33 +244,27 @@ public class Main {
             else if (input.startsWith("Delete Product")){
                 String productName;
                 productName = input.substring(15);
-
                 try {
                     shopsys.deleteProduct(productName);
                     System.out.println("Product was successfully deleted.");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-
             }
 
             else if (input.startsWith("ShowAllObjects")){
                 System.out.println("Current all objects:");
                 shopsys.showAllObjects();
-
             }
 
             else if (input.startsWith("ShowObjectId")){
                 String objectId;
-
-//                System.out.println("Please enter object's ID:");
-//                objectId = myObj.nextLine();
-
                 objectId = input.substring(13);
-
-                //need status??? succeed/failed
-                //surrounds with try&catch -object doesn't exist
-                shopsys.showObject(objectId);
+                try {
+                    shopsys.showObject(objectId);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
 
             else if(input.equals("Done")){
@@ -294,131 +276,6 @@ public class Main {
                 System.out.println("Not a valid input!");
             }
         }
-
-
-
-
-        /*switch case:
-        * case 1:
-        *
-        * case2:
-        *
-        * case make_order:
-        *   create new order with system.makeNewOrder()
-        *   then we build a loop for inserting new line items until finish with system.addlineItetmtoOrder()
-        *
-        * */
-
-/*
-
-        Supplier s = new Supplier("1", "k");
-        Product p = new Product("p1", "ppp", s);
-        System.out.println(p);
-        System.out.println(s);
-        LineItem l = new LineItem(p);
-        */
-
-
-//         ShoppingSystem shs = new ShoppingSystem();
-
-//         WebUser wu = new WebUser("1","11",true,"the moving life 2", "05222","postbgu");
-//         shs.setCurrentLoggedIn(wu);
-// //        Order o = new Order(wu.getCustomer().getAccount());
-// //        System.out.println(o);
-
-//         Supplier s = new Supplier("1", "k");
-// //        Product p = new Product("bamba","bamba",s);
-//         shs.addProduct("bamba","bamba",s);
-//         shs.addProduct("chocolate chips cookies", "chocolate chips cookies", s);
-//         Product p = shs.getIdsToProducts().get("bamba");
-//         Product p1 = shs.getIdsToProducts().get("chocolate chips cookies");
-//        LineItem li = new LineItem(p, 2, 5,o, wu.getShoppingCart());
-//        LineItem li2 = new LineItem(p1, 1, 10, o, wu.getShoppingCart());
-//        Payment pa = new DelayedPayment(wu.getCustomer().getAccount(),o,8);
-//        Payment pa2 = new ImmediatePayment(wu.getCustomer().getAccount(),o,2);
-//        System.out.println(o);
-//        Payment pa3 = new ImmediatePayment(wu.getCustomer().getAccount(),o,5);
-//        System.out.println(o);
-//        Order o1 = new Order(wu.getCustomer().getAccount());
-//        LineItem li3 = new LineItem(p,1,5,o, wu.getShoppingCart());
-//        System.out.println(o);
-
-//         Order o = shs.makeNewOrder();
-//         Order o1 = shs.makeNewOrder();
-
-//         shs.addlineItetmtoOrder(o,p,10);
-
-//         shs.linkProductToPrem(p.getName());
-//         shs.linkProductToPrem(p1.getName());
-
-//         System.out.println(o);
-
-//         shs.deleteProduct(p.getName());
-
-//         System.out.println(o);
-
-//
-//        WebUser wu = new WebUser("1","11",false,"the moving life 2", "05222","postbgu");
-//        Order o = new Order(wu.getCustomer().getAccount());
-////        System.out.println(o);
-//
-//        Supplier s = new Supplier("1", "k");
-//        Product p = new Product("bamba","bamba",s);
-//        Product p1 = new Product("37", "choclate chips cookies", s);
-//        LineItem li = new LineItem(p, 2, 5,o, wu.getShoppingCart());
-//        LineItem li2 = new LineItem(p1, 1, 10, o, wu.getShoppingCart());
-//        Payment pa = new DelayedPayment(wu.getCustomer().getAccount(),o,8);
-//        Payment pa2 = new ImmediatePayment(wu.getCustomer().getAccount(),o,2);
-////        System.out.println(o);
-//        Payment pa3 = new ImmediatePayment(wu.getCustomer().getAccount(),o,5);
-////        System.out.println(o);
-//        Order o1 = new Order(wu.getCustomer().getAccount());
-//        LineItem li3 = new LineItem(p,1,5,o, wu.getShoppingCart());
-//        System.out.println(o);
-
-//        ShoppingSystem ss = new ShoppingSystem();
-//
-////        System.out.println(ss.addUser("Agasiii", "1", false, "as", "12", "as"));
-////        System.out.println(ss.removeUser("Agasiii"));
-////        System.out.println(ss.removeUser("Agasiii"));
-//        try{
-//            ss.addUser("Agasiii", "123", true, "be", "123", "eas");
-//            ss.logIn("Agasiii", "123");
-//            ss.addProduct("Bisli", "Bisli", "123");
-//            ss.linkProductToPrem("Bisli");
-////            ss.showAllObjects();
-//
-//            ss.logIn("Dani", "Dani123");
-//            ss.makeNewOrder("Agasiii's Account");
-//            Order o = ss.getCurrentLoggedIn().getCustomer().getAccount().getOrders().get(0);
-//            ss.showAllObjects();
-//
-//            System.out.println();
-//            ss.removeUser("Dani");
-//            ss.deleteProduct("Bisli");
-//            ss.showAllObjects();
-//
-//            //makeNewOrder
-//            // Dani
-//            //              price   amount
-//            //1. Bamba -    10          2
-//            //2. Bisli -     5          3
-//            //1 5 10
-//            // new Order -> add Product
-//
-//
-//        }
-//        catch (Exception e){
-//            System.out.println(e.getMessage());
-//        }
-//        ss.showObject("Dani");
-//        System.out.println(ss.makeNewOrder("Dani", "Dani123"));
-//        System.out.println(ss.makeNewOrder("Dani", "Dani123"));
-//        System.out.println(ss.makeNewOrder("Agasiii", "123"));
-
-
-
-
     }
 
 }
