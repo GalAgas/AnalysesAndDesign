@@ -184,6 +184,7 @@ public class ShoppingSystem {
         p.setSupplier(null);
 
         for (LineItem l:p.getLineItems()) {
+            l.getOrder().getAccount().setBalance(l.getOrder().getAccount().getBalance()-l.getPrice());
             l.getOrder().removeLineItem(l);
             l.setOrder(null);
 
