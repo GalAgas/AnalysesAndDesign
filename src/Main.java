@@ -197,7 +197,6 @@ public class Main {
                 String price;
 
                 productName = input.substring(13);
-
                 System.out.println("Please enter product's price:");
                 price = myObj.nextLine();
                 if(!isNumeric(price)){

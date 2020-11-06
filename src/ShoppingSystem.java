@@ -136,10 +136,19 @@ public class ShoppingSystem {
 
 
     public void displayOrder(){
+        if (this.currentLoggedIn == null){
+            System.out.println("You are not logged in.");
+            return;
+        }
         Account cur_account = this.currentLoggedIn.getCustomer().getAccount();
-        Order o = cur_account.getOrders().get(cur_account.getOrders().size()-1);
+        if (cur_account.getOrders().size()!= 0) {
+            Order o = cur_account.getOrders().get(cur_account.getOrders().size() - 1);
+            System.out.println(o.showAllDetails());
+        }
+        else{
+            System.out.println("There is no order to display");
+        }
 
-        System.out.println(o);
 
     }
 
@@ -285,7 +294,7 @@ public class ShoppingSystem {
     public void paymentMethod(Order o, Account account, String paymentType ,String toPay) {
         Payment p = null;
         float pay = Float.valueOf(toPay);
-        String id = "payment " + this.autoIncreasingId++;
+        String id = "payment" + this.autoIncreasingId++;
         if (paymentType.equals("1")){
             p = new ImmediatePayment(id,account,o,pay);
         }
@@ -307,6 +316,7 @@ public class ShoppingSystem {
             li.setOrder(null);
         }
     }
+
 
 //    public HashMap<String, WebUser> getWebUsers() {
 //        return webUsers;
