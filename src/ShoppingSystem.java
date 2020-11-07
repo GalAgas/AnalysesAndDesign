@@ -95,7 +95,7 @@ public class ShoppingSystem {
      * @throws Exception
      */
     public void logOut(String loginId) throws Exception {
-        if(loginId.equals(this.currentLoggedIn.getLogin_id())) this.currentLoggedIn = null;
+        if(this.currentLoggedIn!= null && loginId.equals(this.currentLoggedIn.getLogin_id())) this.currentLoggedIn = null;
         else throw new Exception("You are not logged in.");
     }
 
@@ -114,6 +114,27 @@ public class ShoppingSystem {
         }
         return o;
 
+    }
+
+    /**
+     * Checks whether user's input is a number and it fits an existing product.
+     * @param premiumAccount
+     * @param itemNumber
+     * @return
+     */
+    public boolean orderValidation(String premiumAccount, String itemNumber){
+        if(!isNumeric(itemNumber)) return false;
+        ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
+        return Integer.parseInt(itemNumber) < products.size();
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     public Product chooseProduct(String premiumAccount, String itemNumber){
