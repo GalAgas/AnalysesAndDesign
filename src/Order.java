@@ -94,10 +94,11 @@ public class Order {
     }
 
     public String showAllDetails() {
-        return "Order:\n\t " + "Order number: " + number + ", Status: " + this.orderStatus
-                + ", Account: " + account.getId() + ", Address: " + this.shipTo
+        return "Order:\n\t" + "Order number: " + number + ", Status: " + this.orderStatus
+                + ", Address: " + this.shipTo
                 + ", Ordered in: " + this.ordered + ", Shipping date: " + this.shipped +
-                "\n\tTotal cost: " + this.total + ", Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n";
+                "\n\tTotal cost: " + this.total + ", Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n" +
+                this.showAssociated();
     }
 
     @Override
@@ -117,17 +118,23 @@ public class Order {
         this.lineItems = null;
     }
 
-    public void showAssociated() {
-        if (this.account != null) System.out.println(this.account);
+    public String showAssociated() {
+        String toReturn = "";
+        if (this.account != null) toReturn+=(this.account) +"\n";
         if (this.lineItems != null){
+            toReturn += "LineItems:\n";
             for (LineItem li: this.lineItems){
-                System.out.println(li);
+                toReturn += "\t" + li + "\n";
+
             }
         }
         if (this.payments != null){
+            toReturn+="Payments:\n";
             for (Payment p: this.payments){
-                System.out.println(p);
+                toReturn += "\t" + p + ", amount: " + p.getTotal() + "\n";
+
             }
         }
+        return toReturn;
     }
 }
