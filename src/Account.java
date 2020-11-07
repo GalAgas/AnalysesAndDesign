@@ -18,6 +18,8 @@ public class Account {
 
     public Account(String id, String billing_address, WebUser webUser, Customer customer) {
         this.id = id;
+        this.open = new Date();
+        this.is_closed = false;
         this.billing_address = billing_address;
         this.shoppingCart = new ShoppingCart(webUser.getLogin_id()+"'s ShoppingCart", webUser,this);
         this.customer = customer;
@@ -61,30 +63,6 @@ public class Account {
         this.billing_address = billing_address;
     }
 
-    public boolean isIs_closed() {
-        return is_closed;
-    }
-
-    public void setIs_closed(boolean is_closed) {
-        this.is_closed = is_closed;
-    }
-
-    public Date getOpen() {
-        return open;
-    }
-
-    public void setOpen(Date open) {
-        this.open = open;
-    }
-
-    public Date getClosed() {
-        return closed;
-    }
-
-    public void setClosed(Date closed) {
-        this.closed = closed;
-    }
-
     public float getBalance() {
         return balance;
     }
@@ -115,6 +93,10 @@ public class Account {
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 
     public void removeAssociated(){

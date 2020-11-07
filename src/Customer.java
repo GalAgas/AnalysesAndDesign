@@ -1,6 +1,6 @@
 public class Customer {
     private String id;
-    private String address; //Address???
+    private Address address;
     private String phone;
     private String email;
 
@@ -8,17 +8,19 @@ public class Customer {
     private WebUser webUser;
     private Account account;
 
-    public Customer(String address, String phone, String email, WebUser webUser, boolean isPremium) {
+
+    public Customer(String city, String street, String number, String phone, String email, WebUser webUser, boolean isPremium) {
         this.id = webUser.getLogin_id()+"'s Customer";
-        this.address = address;
+        this.address = new Address(city, street, number);
         this.phone = phone;
         this.email = email;
         this.webUser = webUser;
+        String billingAddress = this.address.getStreet()+ " " +this.address.getNumber() + ", " +this.address.getCity();
         if (isPremium){
-            this.account = new PremiumAccount(webUser.getLogin_id()+"'s Account", address, webUser, this);
+            this.account = new PremiumAccount(webUser.getLogin_id()+"'s Account", billingAddress, webUser, this);
         }
         else {
-            this.account = new Account(webUser.getLogin_id()+"'s Account", address, webUser, this);
+            this.account = new Account(webUser.getLogin_id()+"'s Account", billingAddress, webUser, this);
         }
 
     }
@@ -29,30 +31,6 @@ public class Customer {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public WebUser getWebUser() {
@@ -69,6 +47,10 @@ public class Customer {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     @Override
