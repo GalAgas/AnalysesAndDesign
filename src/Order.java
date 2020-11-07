@@ -8,7 +8,7 @@ public class Order {
     private String number;
     private Date ordered;
     private Date shipped;
-    private String shipTo; //Address???
+    private Address shipTo; //Address???
     private OrderStatus orderStatus;
     private float total;
     private static Integer autoID=0;
@@ -31,7 +31,7 @@ public class Order {
         this.lineItems = new ArrayList<>();
         this.orderStatus = OrderStatus.New;
         this.ordered = new Date();
-        this.shipTo = this.account.getBilling_address();
+        this.shipTo = this.account.getCustomer().getAddress();
         this.total =0;
         this.paid=0;
         this.account.addOrder(this);

@@ -10,12 +10,12 @@ public class WebUser {
     private ShoppingCart shoppingCart;
 
     public WebUser(String login_id, String password, boolean isPremium,
-                   String address, String phone, String email) {
+                   String city, String street, String number, String phone, String email) {
         this.login_id = login_id;
         this.password = password;
         this.state = UserState.New;
 
-        this.customer = new Customer(address,phone,email,this, isPremium);
+        this.customer = new Customer(city, street, number, phone,email,this, isPremium);
         this.shoppingCart = this.customer.getAccount().getShoppingCart();
     }
 

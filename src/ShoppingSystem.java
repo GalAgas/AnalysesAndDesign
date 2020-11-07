@@ -6,6 +6,7 @@ public class ShoppingSystem {
 //    private HashMap<String, Supplier> suppliers;
 //    private HashMap<String, Product> idsToProducts;
     private HashMap<String, Object> allObjects;
+
     private static Integer autoIncreasingId = 0;
 
     private WebUser currentLoggedIn;
@@ -35,14 +36,16 @@ public class ShoppingSystem {
      * @param loginId String
      * @param password String
      * @param isPremium boolean
-     * @param address String
+     * @param city String
+     * @param street String
+     * @param number String
      * @param phone String
      * @param email String
      * @throws Exception
      */
-    public void addUser(String loginId, String password, boolean isPremium, String address,String phone,String email) throws Exception {
+    public void addUser(String loginId, String password, boolean isPremium, String city, String street, String number ,String phone, String email) throws Exception {
         if(idValidation(loginId)) throw new Exception("Id is not valid");
-        WebUser newUser = new WebUser(loginId, password, isPremium, address, phone, email);
+        WebUser newUser = new WebUser(loginId, password, isPremium, city, street, number, phone, email);
         allObjects.put(loginId, newUser);
         allObjects.put(newUser.getCustomer().getId(), newUser.getCustomer());
         allObjects.put(newUser.getCustomer().getAccount().getId(), newUser.getCustomer().getAccount());
@@ -141,12 +144,14 @@ public class ShoppingSystem {
         ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
         return products.get(Integer.parseInt(itemNumber));
     }
+
     public void displayPremiumProducts(String premiumAccount){
         ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
         for(int i=0;i<products.size();i++){
             System.out.println(i+". " + products.get(i));
         }
     }
+
     public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
         LineItem l = new LineItem("LineItem"+autoIncreasingId++, pToadd, amount, pToadd.getPrice() * amount,
                 order, this.currentLoggedIn.getShoppingCart());
@@ -290,8 +295,8 @@ public class ShoppingSystem {
         allObjects.put(ramen.getId(), ramen);
         try {
             addUser("Dani", "Dani123", false,
-                    "BGU", "123456", "dani@post.bgu.ac.il");
-            addUser("Dana", "Dana123", true, "A", "1234", "dana@gmail.com");
+                    "Beer-Sheva", "BGU", "1", "1234567","dani@post.bgu.ac.il");
+            addUser("Dana", "Dana123", true, "Tel-Aviv", "TAU","3" ,"03654738","dana@gmail.com");
         }
         catch(Exception e){
             System.out.println(e.getMessage());
