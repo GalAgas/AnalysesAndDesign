@@ -31,8 +31,9 @@ public class Main {
                 String login_id;
                 String password;
                 String isPrem;
-
-                String address;
+                String city;
+                String street;
+                String number;
                 String phone;
                 String email;
 
@@ -57,8 +58,14 @@ public class Main {
                     isPremium = false;
                 }
 
-                System.out.println("Please enter an address:");
-                address = myObj.nextLine();
+                System.out.println("Please enter city name:");
+                city = myObj.nextLine();
+
+                System.out.println("Please enter street name:");
+                street = myObj.nextLine();
+
+                System.out.println("Please enter street's number:");
+                number = myObj.nextLine();
 
                 System.out.println("Please enter a phone:");
                 phone = myObj.nextLine();
@@ -67,7 +74,7 @@ public class Main {
                 email = myObj.nextLine();
 
                 try{
-                    shopsys.addUser(login_id, password, isPremium, address, phone, email);
+                    shopsys.addUser(login_id, password, isPremium, city, street, number, phone, email);
 
                     System.out.println("Congratulations! You have successfully added!");
                 }
@@ -143,11 +150,14 @@ public class Main {
                     while(!choose.equals("Done")){
                         System.out.println("Choose product's number as shown below: ");
                         System.out.println("If you don't want to order anymore, type 'Done' ");
+
                         shopsys.displayPremiumProducts(premiumAccount);
                         choose = myObj.nextLine();
+
                         if(choose.equals("Done")) break;
+
                         if(!isNumeric(choose)){
-                            System.out.println("You've entered a wrong number, you should make a new order!");
+                            System.out.println("You've entered a wrong character, you should make a new order!");
                             shopsys.deleteWrongOrder(o);
                             orderDeleted = true;
                             break;
@@ -188,7 +198,7 @@ public class Main {
 
             }
 
-            else if (input.startsWith("Display order")){
+            else if (input.equals("Display order")){
                 shopsys.displayOrder();
             }
 
@@ -212,7 +222,7 @@ public class Main {
                 }
             }
 
-            else if (input.startsWith("Add Product")){
+            else if (input.equals("Add Product")){
                 String supplierId;
                 String productId;
                 String productName;
@@ -251,7 +261,7 @@ public class Main {
                 }
             }
 
-            else if (input.startsWith("ShowAllObjects")){
+            else if (input.equals("ShowAllObjects")){
                 System.out.println("Current all objects:");
                 shopsys.showAllObjects();
             }
