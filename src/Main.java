@@ -2,14 +2,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch(NumberFormatException e){
-            return false;
-        }
-    }
 
     public static void main(String[] args) {
     // User interface
@@ -155,9 +147,8 @@ public class Main {
                         choose = myObj.nextLine();
 
                         if(choose.equals("Done")) break;
-
-                        if(!isNumeric(choose)){
-                            System.out.println("You've entered a wrong character, you should make a new order!");
+                        if(!shopsys.orderValidation(premiumAccount, choose)){
+                            System.out.println("You've entered a wrong number, you should make a new order!");
                             shopsys.deleteWrongOrder(o);
                             orderDeleted = true;
                             break;
@@ -165,7 +156,7 @@ public class Main {
                         Product chosen = shopsys.chooseProduct(premiumAccount, choose);
                         System.out.println("Choose the amount that you want to purchase: ");
                         String amount = myObj.nextLine();
-                        if(isNumeric(amount)) {
+                        if(ShoppingSystem.isNumeric(amount)) {
                             shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
                         }
                         else{
@@ -209,7 +200,7 @@ public class Main {
                 productName = input.substring(13);
                 System.out.println("Please enter product's price:");
                 price = myObj.nextLine();
-                if(!isNumeric(price)){
+                if(!ShoppingSystem.isNumeric(price)){
                     System.out.println("The price isn't a number");
                     continue;
                 }
