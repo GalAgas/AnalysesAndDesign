@@ -122,7 +122,7 @@ public class ShoppingSystem {
         if (!(allObjects.get(premiumAccount) instanceof PremiumAccount)){
             throw new Exception("This account isn't premium");
         }
-        Order o = new Order("order"+autoIncreasingId++, this.currentLoggedIn.getCustomer().getAccount());
+        Order o = new Order("order", this.currentLoggedIn.getCustomer().getAccount());
         putObjectToMaps(o.getId(), o);
         if(allObjects.get(premiumAccount) == null){
             throw new Exception("You can't buy from this Account");
@@ -165,7 +165,7 @@ public class ShoppingSystem {
     }
 
     public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
-        LineItem l = new LineItem("LineItem"+autoIncreasingId, pToadd, amount, pToadd.getPrice() * amount,
+        LineItem l = new LineItem("LineItem", pToadd, amount, pToadd.getPrice() * amount,
                 order, this.currentLoggedIn.getShoppingCart());
         putObjectToMaps(l.getID(), l);
         Account a = order.getAccount();
@@ -326,10 +326,11 @@ public class ShoppingSystem {
         return currentLoggedIn;
     }
 
-    public void paymentMethod(Order o, Account account, String paymentType ,String toPay) {
+    public void paymentMethod(Order o, Account account, String paymentType ,String toPay) throws Exception {
+        if (!isNumeric(toPay)) throw new Exception("You didn't enter a number!");
         Payment p = null;
         float pay = Float.valueOf(toPay);
-        String id = "payment" + this.autoIncreasingId++;
+        String id = "payment "; //+ this.autoIncreasingId++;
         if (paymentType.equals("1")){
             p = new ImmediatePayment(id,account,o,pay);
         }

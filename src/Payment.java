@@ -13,7 +13,7 @@ public abstract class Payment {
 
     public Payment(String id, Account account, Order order, float total) {
         this.autoID += 1;
-        this.id = id;
+        this.id = id+this.autoID;
         this.account = account;
         this.order = order;
         this.account.addPayment(this);

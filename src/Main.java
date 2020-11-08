@@ -160,15 +160,16 @@ public class Main {
                             shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
                         }
                         else{
-                            System.out.println("You didn't enter an amount");
+                            System.out.println("You didn't enter an amount. This LineItem has not been added to your order.");
                             continue;
                         }
                     }
                     if(orderDeleted) continue;
                     System.out.println("The price is: " + o.getTotal());
-                    System.out.println("Do you want to pay now? y/n");
+                    System.out.println("Do you want to pay now?\n\tPress 'y' if yes, else press any other key.");
                     String toPay = myObj.nextLine();
                     if (!toPay.equals("y")){
+                        System.out.println("You didn't pay for your order!");
                         continue;
                     }
                     else{
@@ -178,9 +179,20 @@ public class Main {
                                     "Press '3' when you're done");
                             paymentType = myObj.nextLine();
                             if (paymentType.equals("3")) continue;
-                            System.out.println("How much do you want to pay?");
-                            toPay = myObj.nextLine();
-                            shopsys.paymentMethod(o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
+                            if (paymentType.equals("2") || paymentType.equals("1")) {
+                                System.out.println("How much do you want to pay?");
+                                toPay = myObj.nextLine();
+                                try {
+                                    shopsys.paymentMethod(o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
+                                    System.out.println("Your payment has been created successfully.");
+                                }
+                                catch (Exception e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            else{
+                                System.out.println("Not a valid input!");
+                            }
                         }
                     }
                 } catch (Exception e) {

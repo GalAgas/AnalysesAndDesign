@@ -25,7 +25,7 @@ public class Order {
 
     public Order(String id, Account account) {
         this.autoID += 1;
-        this.number = id;
+        this.number = id + " "+this.autoID;
         this.account = account;
         this.payments = new ArrayList<>();
         this.lineItems = new ArrayList<>();
@@ -97,8 +97,7 @@ public class Order {
         return "Order:\n\t" + "Order number: " + number + ", Status: " + this.orderStatus
                 + ", Address: " + this.shipTo
                 + ", Ordered in: " + this.ordered + ", Shipping date: " + this.shipped +
-                "\n\tTotal cost: " + this.total + ", Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n" +
-                this.showAssociated();
+                "\n\tTotal cost: " + this.total + ", Total Paid: " + paid + ", remaining payment: " + (this.total - paid)+"\n";
     }
 
     @Override
@@ -118,23 +117,21 @@ public class Order {
         this.lineItems = null;
     }
 
-    public String showAssociated() {
-        String toReturn = "";
-        if (this.account != null) toReturn+=(this.account) +"\n";
+    public void showAssociated() {
+        if (this.account != null) System.out.println((this.account));
         if (this.lineItems != null){
-            toReturn += "LineItems:\n";
+            System.out.println("LineItems:");
             for (LineItem li: this.lineItems){
-                toReturn += "\t" + li + "\n";
+                System.out.println("\t" + li);
 
             }
         }
         if (this.payments != null){
-            toReturn+="Payments:\n";
+            System.out.println("Payments:");
             for (Payment p: this.payments){
-                toReturn += "\t" + p + ", amount: " + p.getTotal() + "\n";
+                System.out.println("\t" + p + ", amount: " + p.getTotal());
 
             }
         }
-        return toReturn;
     }
 }

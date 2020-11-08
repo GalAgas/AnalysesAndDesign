@@ -16,7 +16,7 @@ public class LineItem {
 
     public LineItem(String id, Product p, int quantity, int price, Order order, ShoppingCart shoppingCart) {
         this.autoID += 1;
-        this.ID = id;
+        this.ID = id +" "+this.autoID;
         this.product = p;
         this.order = order;
         this.shoppingCart = shoppingCart;
@@ -43,10 +43,6 @@ public class LineItem {
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
-    }
-
-    public Product getProduct() {
-        return product;
     }
 
     public void setProduct(Product product) {
@@ -79,7 +75,7 @@ public class LineItem {
 
     @Override
     public String toString(){
-        return "LineItem:\n\tNo. " + this.ID+ ", Product's name: "+this.product.getName();
+        return "LineItem:\n\tID: " + this.ID+ ", Product's name: "+this.product.getName();
     }
 
     public void removeAssociated() {
