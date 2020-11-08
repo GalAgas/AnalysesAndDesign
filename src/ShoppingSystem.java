@@ -2,20 +2,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShoppingSystem {
-//    private HashMap<String, WebUser> webUsers;
-//    private HashMap<String, Supplier> suppliers;
-//    private HashMap<String, Product> idsToProducts;
     private HashMap<String, Object> allObjects;
+    private HashMap<Integer, Object> objectsForPrint;
+    private HashMap<Object, Integer> objectToId;
 
     private static Integer autoIncreasingId = 0;
 
     private WebUser currentLoggedIn;
 
     public ShoppingSystem() {
-//        this.webUsers = new HashMap<>();
-//        this.suppliers = new HashMap<>();
-//        this.idsToProducts = new HashMap<>();
         this.allObjects = new HashMap<>();
+        this.objectsForPrint = new HashMap<>();
+        this.objectToId = new HashMap<>();
         this.initializeSystem();
         this.currentLoggedIn = null;
 
@@ -46,10 +44,23 @@ public class ShoppingSystem {
     public void addUser(String loginId, String password, boolean isPremium, String city, String street, String number ,String phone, String email) throws Exception {
         if(idValidation(loginId)) throw new Exception("Id is not valid");
         WebUser newUser = new WebUser(loginId, password, isPremium, city, street, number, phone, email);
-        allObjects.put(loginId, newUser);
-        allObjects.put(newUser.getCustomer().getId(), newUser.getCustomer());
-        allObjects.put(newUser.getCustomer().getAccount().getId(), newUser.getCustomer().getAccount());
-        allObjects.put(newUser.getShoppingCart().getID(), newUser.getShoppingCart());
+        putObjectToMaps(loginId, newUser);
+        putObjectToMaps(newUser.getCustomer().getId(), newUser.getCustomer());
+        putObjectToMaps(newUser.getCustomer().getAccount().getId(), newUser.getCustomer().getAccount());
+        putObjectToMaps(newUser.getShoppingCart().getID(), newUser.getShoppingCart());
+    }
+
+
+    public void deleteObjectFromMaps(String id, Object o){
+        allObjects.remove(id);
+        objectsForPrint.remove(objectToId.get(o));
+        objectToId.remove(o);
+    }
+
+    public void putObjectToMaps(String id, Object o){
+        allObjects.put(id, o);
+        objectsForPrint.put(autoIncreasingId, o);
+        objectToId.put(o, autoIncreasingId++);
     }
 
     /**
@@ -60,24 +71,25 @@ public class ShoppingSystem {
     public void removeUser(String loginId) throws Exception {
         if(!idValidation(loginId)) throw new Exception("Id is not valid");
         WebUser user = (WebUser)allObjects.get(loginId);
+        if (user == this.currentLoggedIn ) this.currentLoggedIn = null;
         user.getShoppingCart().setWebUser(null); //Blocks the way to webUser from ShoppingCart
         user.getCustomer().setWebUser(null); //Blocks the way to webUser from Customer
-        allObjects.remove(user.getLogin_id());
-        allObjects.remove(user.getCustomer().getId());
-        allObjects.remove(user.getCustomer().getAccount().getId());
+        deleteObjectFromMaps(loginId, user);
+        deleteObjectFromMaps(user.getCustomer().getId(), user.getCustomer());
+        deleteObjectFromMaps(user.getCustomer().getAccount().getId(), user.getCustomer().getAccount());
         ArrayList<Order> orders = user.getCustomer().getAccount().getOrders();
         HashMap<String,Payment> payments = user.getCustomer().getAccount().getPayments();
         ArrayList<LineItem> userLineItems = user.getShoppingCart().getLineItems();
         for(Order o : orders){
-            allObjects.remove(o.getId());
+            deleteObjectFromMaps(o.getId(), o);
         }
         for(Payment p: payments.values()){
-            allObjects.remove(p.getId());
+            deleteObjectFromMaps(p.getId(), p);
         }
         for(LineItem li: userLineItems){
-            allObjects.remove(li.getID());
+            deleteObjectFromMaps(li.getID(), li);
         }
-        allObjects.remove(user.getShoppingCart().getID());
+        deleteObjectFromMaps(user.getShoppingCart().getID(), user.getShoppingCart());
     }
 
     /**
@@ -111,7 +123,7 @@ public class ShoppingSystem {
             throw new Exception("This account isn't premium");
         }
         Order o = new Order("order"+autoIncreasingId++, this.currentLoggedIn.getCustomer().getAccount());
-        allObjects.put(o.getId(), o);
+        putObjectToMaps(o.getId(), o);
         if(allObjects.get(premiumAccount) == null){
             throw new Exception("You can't buy from this Account");
         }
@@ -153,9 +165,9 @@ public class ShoppingSystem {
     }
 
     public void addlineItetmtoOrder(Order order, Product pToadd, int amount) {
-        LineItem l = new LineItem("LineItem"+autoIncreasingId++, pToadd, amount, pToadd.getPrice() * amount,
+        LineItem l = new LineItem("LineItem"+autoIncreasingId, pToadd, amount, pToadd.getPrice() * amount,
                 order, this.currentLoggedIn.getShoppingCart());
-        allObjects.put(l.getID(), l);
+        putObjectToMaps(l.getID(), l);
         Account a = order.getAccount();
         a.setBalance(a.getBalance() + l.getPrice());
     }
@@ -200,7 +212,7 @@ public class ShoppingSystem {
             throw new Exception("The supplier of the product is not valid");
         }
         Product p = new Product(productid, productName, (Supplier) (allObjects.get(supplierId)));
-        this.allObjects.put(p.getId(), p);
+        putObjectToMaps(p.getId(), p);
     }
 
     public void deleteProduct(String productName) throws Exception {
@@ -208,7 +220,7 @@ public class ShoppingSystem {
             throw new Exception("Product doesn't exist.");
         }
         Product p = (Product)allObjects.get(productName);
-        allObjects.remove(productName);
+        deleteObjectFromMaps(productName, p);
 
         if(p.getPremiumAccount() != null) {
             p.getPremiumAccount().removeProduct(p);
@@ -227,7 +239,7 @@ public class ShoppingSystem {
             l.setShoppingCart(null);
 
             l.setProduct(null);
-            allObjects.remove(l.getID());
+            deleteObjectFromMaps(l.getID(), l);
         }
 
     }
@@ -236,8 +248,8 @@ public class ShoppingSystem {
      * Displays all current objects
      */
     public void showAllObjects(){
-        for(Object wu : allObjects.values()){
-            System.out.println(wu);
+        for(Integer objectId : objectsForPrint.keySet()){
+            System.out.println("Object's Id for searching: " + objectId + ", " + objectsForPrint.get(objectId));
         }
     }
 
@@ -246,14 +258,14 @@ public class ShoppingSystem {
      * @param id String
      */
     public void showObject(String id) throws Exception {
-        if(allObjects.containsKey(id)){
-            Object o = allObjects.get(id);
+        if(isNumeric(id) && objectsForPrint.containsKey(Integer.parseInt(id))){
+            Object o = objectsForPrint.get(Integer.parseInt(id));
             System.out.println(showAllDetails(o));
             System.out.println("Associated to:");
             showAssociated(o);
         }
         else{
-            throw new Exception("Given id is invalid, there is no such object in our system");
+            throw new Exception("Given id is invalid, there is no such object in our system.\nPlease use object's Id.");
         }
     }
 
@@ -288,11 +300,11 @@ public class ShoppingSystem {
      */
     public void initializeSystem(){
         Supplier moshe = new Supplier("123", "Moshe");
-        allObjects.put(moshe.getId(), moshe);
+        putObjectToMaps(moshe.getId(), moshe);
         Product bamba = new Product("Bamba", "Bamba", moshe);
         Product ramen = new Product("Ramen", "Ramen", moshe);
-        allObjects.put(bamba.getId(), bamba);
-        allObjects.put(ramen.getId(), ramen);
+        putObjectToMaps(bamba.getId(), bamba);
+        putObjectToMaps(ramen.getId(), ramen);
         try {
             addUser("Dani", "Dani123", false,
                     "Beer-Sheva", "BGU", "1", "1234567","dani@post.bgu.ac.il");
@@ -314,10 +326,6 @@ public class ShoppingSystem {
         return currentLoggedIn;
     }
 
-    public void setCurrentLoggedIn(WebUser currentLoggedIn) {
-        this.currentLoggedIn = currentLoggedIn;
-    }
-
     public void paymentMethod(Order o, Account account, String paymentType ,String toPay) {
         Payment p = null;
         float pay = Float.valueOf(toPay);
@@ -329,43 +337,15 @@ public class ShoppingSystem {
             p = new DelayedPayment(id,account,o,pay);
         }
         if (p != null){
-            allObjects.put(p.getId(),p);
+            putObjectToMaps(p.getId(), p);
         }
-
-
-
     }
 
     public void deleteWrongOrder(Order o) {
-        allObjects.remove(o.getId());
+        deleteObjectFromMaps(o.getId(), o);
         for(LineItem li: o.getLineItems()){
-            allObjects.remove(li.getID());
+            deleteObjectFromMaps(li.getID(), li);
             li.setOrder(null);
         }
     }
-
-
-//    public HashMap<String, WebUser> getWebUsers() {
-//        return webUsers;
-//    }
-//
-//    public void setWebUsers(HashMap<String, WebUser> webUsers) {
-//        this.webUsers = webUsers;
-//    }
-//
-//    public HashMap<String, Supplier> getSuppliers() {
-//        return suppliers;
-//    }
-//
-//    public void setSuppliers(HashMap<String, Supplier> suppliers) {
-//        this.suppliers = suppliers;
-//    }
-//
-//    public HashMap<String, Product> getIdsToProducts() {
-//        return idsToProducts;
-//    }
-//
-//    public void setIdsToProducts(HashMap<String, Product> idsToProducts) {
-//        this.idsToProducts = idsToProducts;
-//    }
 }
