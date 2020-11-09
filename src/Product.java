@@ -6,6 +6,7 @@ public class Product {
 
     //added attributes
     private int price;
+    private int amountToSale;
 
     // Associations
     private Supplier supplier;
@@ -72,9 +73,10 @@ public class Product {
     }
 
     //connects prem
-    public void setPremiumAccount(PremiumAccount premiumAccount, Integer price) {
+    public void setPremiumAccount(PremiumAccount premiumAccount, Integer price, Integer amountToSale) {
         this.premiumAccount = premiumAccount;
         this.price = price;
+        this.amountToSale = amountToSale;
     }
 
     //need to connect also from lineItem, !!
@@ -104,5 +106,13 @@ public class Product {
                 System.out.println(li);
             }
         }
+    }
+
+    public int getAmountToSale() {
+        return amountToSale;
+    }
+
+    public void setAmountToSale(int amountToSale) {
+        this.amountToSale = amountToSale;
     }
 }
