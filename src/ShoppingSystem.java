@@ -170,7 +170,8 @@ public class ShoppingSystem {
         putObjectToMaps(l.getID(), l);
         pToadd.setAmountToSale(pToadd.getAmountToSale() - amount);
         Account a = order.getAccount();
-        a.setBalance(a.getBalance() + l.getPrice());
+        pToadd.getPremiumAccount().setBalance(pToadd.getPremiumAccount().getBalance() + l.getPrice());
+        a.setBalance(a.getBalance() - l.getPrice());
     }
 
 

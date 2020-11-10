@@ -19,10 +19,12 @@ public class Account {
     public Account(String id, String billing_address, WebUser webUser, Customer customer) {
         this.id = id;
         this.open = new Date();
+        this.closed = null;
         this.is_closed = false;
         this.billing_address = billing_address;
         this.shoppingCart = new ShoppingCart(webUser.getLogin_id()+"'s ShoppingCart", webUser,this);
         this.customer = customer;
+        this.balance = 0;
         orders = new ArrayList<>();
         payments = new HashMap<>();
     }
@@ -55,14 +57,6 @@ public class Account {
         this.id = id;
     }
 
-    public String getBilling_address() {
-        return billing_address;
-    }
-
-    public void setBilling_address(String billing_address) {
-        this.billing_address = billing_address;
-    }
-
     public float getBalance() {
         return balance;
     }
@@ -75,10 +69,6 @@ public class Account {
         return payments;
     }
 
-    public void setPayments(HashMap<String, Payment> payments) {
-        this.payments = payments;
-    }
-
     public ArrayList<Order> getOrders() {
         return orders;
     }
@@ -89,10 +79,6 @@ public class Account {
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 
     public Customer getCustomer() {
@@ -135,6 +121,6 @@ public class Account {
 
     public String showAllDetails(){
         return this.toString()+", Address: " + this.billing_address + ", Date opened: " + this.open +
-                ", Date closed: " + this.closed + ", Balance: "+this.balance;
+                "is closed: " + this.is_closed + ", Date closed: " + this.closed + ", Balance: "+this.balance;
     }
 }

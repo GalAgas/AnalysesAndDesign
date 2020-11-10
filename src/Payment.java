@@ -16,6 +16,7 @@ public abstract class Payment {
         this.id = id+this.autoID;
         this.account = account;
         this.order = order;
+        this.details = "paid by account: " + this.account.getId();
         this.account.addPayment(this);
         this.pay(total);
     }

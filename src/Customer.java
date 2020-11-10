@@ -33,10 +33,6 @@ public class Customer {
         this.id = id;
     }
 
-    public WebUser getWebUser() {
-        return webUser;
-    }
-
     public void setWebUser(WebUser webUser) {
         this.webUser = webUser;
     }
