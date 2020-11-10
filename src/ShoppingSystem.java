@@ -160,7 +160,7 @@ public class ShoppingSystem {
     public void displayPremiumProducts(String premiumAccount){
         ArrayList<Product> products = ((PremiumAccount)allObjects.get(premiumAccount)).getProducts();
         for(int i=0;i<products.size();i++){
-            System.out.println(i+". " + products.get(i));
+            System.out.println(i+". " + products.get(i) + ", amount: " + products.get(i).getAmountToSale());
         }
     }
 
@@ -168,6 +168,7 @@ public class ShoppingSystem {
         LineItem l = new LineItem("LineItem", pToadd, amount, pToadd.getPrice() * amount,
                 order, this.currentLoggedIn.getShoppingCart());
         putObjectToMaps(l.getID(), l);
+        pToadd.setAmountToSale(pToadd.getAmountToSale() - amount);
         Account a = order.getAccount();
         a.setBalance(a.getBalance() + l.getPrice());
     }
@@ -190,7 +191,7 @@ public class ShoppingSystem {
 
     }
 
-    public void linkProductToPrem(String productName, Integer price) throws Exception {
+    public void linkProductToPrem(String productName, Integer price, Integer amountToSale) throws Exception {
         if(this.currentLoggedIn == null || !(this.currentLoggedIn.getCustomer().getAccount() instanceof PremiumAccount)){
             throw new Exception("There's no logged in user or current user isn't Premium");
         }
@@ -202,7 +203,7 @@ public class ShoppingSystem {
             throw new Exception("Given product already exists to another Premium user");
         }
         PremiumAccount a = (PremiumAccount) this.currentLoggedIn.getCustomer().getAccount();
-        p.setPremiumAccount(a, price);
+        p.setPremiumAccount(a, price,amountToSale);
         a.addProduct(p);
 
     }
@@ -225,7 +226,7 @@ public class ShoppingSystem {
         if(p.getPremiumAccount() != null) {
             p.getPremiumAccount().removeProduct(p);
         }
-        p.setPremiumAccount(null, 0);
+        p.setPremiumAccount(null, 0, 0);
 
         p.getSupplier().removeProduct(p);
         p.setSupplier(null);
@@ -315,7 +316,7 @@ public class ShoppingSystem {
         }
         this.currentLoggedIn = (WebUser)allObjects.get("Dana");
         try{
-            linkProductToPrem("Bamba", 3);
+            linkProductToPrem("Bamba", 3, 10);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -329,7 +330,7 @@ public class ShoppingSystem {
     public void paymentMethod(Order o, Account account, String paymentType ,String toPay) throws Exception {
         if (!isNumeric(toPay)) throw new Exception("You didn't enter a number!");
         Payment p = null;
-        float pay = Float.valueOf(toPay);
+        float pay = Float.parseFloat(toPay);
         String id = "payment "; //+ this.autoIncreasingId++;
         if (paymentType.equals("1")){
             p = new ImmediatePayment(id,account,o,pay);

@@ -88,6 +88,10 @@ public class Order {
         return lineItems;
     }
 
+    public float getPaid() {
+        return paid;
+    }
+
     public void removeLineItem(LineItem l) {
         this.lineItems.remove(l);
         this.total-=l.getPrice();

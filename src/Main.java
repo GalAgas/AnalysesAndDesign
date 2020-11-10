@@ -17,7 +17,16 @@ public class Main {
 
         while (!done){
             System.out.println("Please type a command:");
-            String input = myObj.nextLine();  // Read user input
+            String input = null;
+
+            try{
+                input = myObj.nextLine();// Read user input
+            }
+            catch(Exception e){
+                System.out.println("Goodbye!");
+                done = true;
+                break;
+            }
 
             if (input.startsWith("Add WebUser") && input.length() > 11){
                 String login_id;
@@ -154,14 +163,23 @@ public class Main {
                             break;
                         }
                         Product chosen = shopsys.chooseProduct(premiumAccount, choose);
+//                        System.out.println("We currently have " + chosen.getAmountToSale() + " of " + chosen.getName() + " in stock. ");
                         System.out.println("Choose the amount that you want to purchase: ");
+
                         String amount = myObj.nextLine();
-                        if(ShoppingSystem.isNumeric(amount)) {
-                            shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
+                        if(!ShoppingSystem.isNumeric(amount)) {
+                            System.out.println("You didn't enter an amount.");
+                            System.out.println("This Line Item has not been added to your order. ");
+                            continue;
+
+                        }
+                        else if(Integer.parseInt(amount) > chosen.getAmountToSale()){
+                            System.out.println("The amount you specified is not available.");
+                            System.out.println("This Line Item has not been added to your order. ");
+                            continue;
                         }
                         else{
-                            System.out.println("You didn't enter an amount. This LineItem has not been added to your order.");
-                            continue;
+                            shopsys.addlineItetmtoOrder(o, chosen, Integer.parseInt(amount));
                         }
                     }
                     if(orderDeleted) continue;
@@ -178,11 +196,20 @@ public class Main {
                             System.out.println("Choose your payment:\n\tFor ImmediatePayment press '1'\n\tFor DelayedPayment press '2'\n\t" +
                                     "Press '3' when you're done");
                             paymentType = myObj.nextLine();
-                            if (paymentType.equals("3")) continue;
+                            if (paymentType.equals("3")) {
+                                if(o.getTotal() > o.getPaid()){
+                                    System.out.println("Reminder: You didn't finish paying for this order.");
+                                }
+                                break;
+                            }
                             if (paymentType.equals("2") || paymentType.equals("1")) {
                                 System.out.println("How much do you want to pay?");
                                 toPay = myObj.nextLine();
                                 try {
+                                    if(o.getTotal() < Float.parseFloat(toPay)){
+                                        System.out.println("Because we're nice, we won't let you pay above the order's price. ");
+                                        continue;
+                                    }
                                     shopsys.paymentMethod(o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
                                     System.out.println("Your payment has been created successfully.");
                                 }
@@ -205,9 +232,10 @@ public class Main {
                 shopsys.displayOrder();
             }
 
-            else if (input.startsWith("Link Product")){
+            else if (input.startsWith("Link Product") && input.length() > 12){
                 String productName;
                 String price;
+                String amountToSale;
 
                 productName = input.substring(13);
                 System.out.println("Please enter product's price:");
@@ -216,9 +244,15 @@ public class Main {
                     System.out.println("The price isn't a number");
                     continue;
                 }
+                System.out.println("Please enter the amount you want to sell:");
+                amountToSale = myObj.nextLine();
+                if(!ShoppingSystem.isNumeric(amountToSale)){
+                    System.out.println("The amount isn't a number");
+                    continue;
+                }
 
                 try {
-                    shopsys.linkProductToPrem(productName, Integer.parseInt(price));
+                    shopsys.linkProductToPrem(productName, Integer.parseInt(price), Integer.parseInt(amountToSale));
                     System.out.println("Product was successfully linked.");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
