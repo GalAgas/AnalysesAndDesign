@@ -170,8 +170,7 @@ public class ShoppingSystem {
         putObjectToMaps(l.getID(), l);
         pToadd.setAmountToSale(pToadd.getAmountToSale() - amount);
         Account a = order.getAccount();
-        pToadd.getPremiumAccount().setBalance(pToadd.getPremiumAccount().getBalance() + l.getPrice());
-        a.setBalance(a.getBalance() - l.getPrice());
+
     }
 
 
@@ -325,11 +324,17 @@ public class ShoppingSystem {
 
     }
 
+    public Object retrieveFromMap(String id){
+        if(allObjects.containsKey(id))
+            return allObjects.get(id);
+        return null;
+    }
+
     public WebUser getCurrentLoggedIn() {
         return currentLoggedIn;
     }
 
-    public void paymentMethod(Order o, Account account, String paymentType ,String toPay) throws Exception {
+    public void paymentMethod(PremiumAccount pa, Order o, Account account, String paymentType ,String toPay) throws Exception {
         if (!isNumeric(toPay)) throw new Exception("You didn't enter a number!");
         Payment p = null;
         float pay = Float.parseFloat(toPay);
@@ -342,6 +347,7 @@ public class ShoppingSystem {
         }
         if (p != null){
             putObjectToMaps(p.getId(), p);
+            pa.setBalance(pa.getBalance() + pay);
         }
     }
 

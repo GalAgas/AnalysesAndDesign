@@ -36,7 +36,7 @@ public abstract class Payment {
     public void pay(float topay) {
         this.paid = new Date();
         if (topay <= this.order.getTotal()) {
-            this.total -= topay;
+            this.total += topay;
             this.order.addPayment(this);
             this.account.addPayment(this);
         }

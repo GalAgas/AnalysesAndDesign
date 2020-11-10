@@ -44,7 +44,7 @@ public class Order {
     public void addPayment(Payment payment){
         payments.add(payment);
         this.orderStatus = OrderStatus.Hold; // change the status of the order
-        this.getAccount().setBalance(this.account.getBalance() - payment.getTotal());
+        this.getAccount().setBalance(this.account.getBalance() + payment.getTotal());
         paid += payment.getTotal();
         if (paid == this.total){ // if the total amount was paid then close the order and ship it to the customer.
             this.orderStatus = OrderStatus.Closed;
@@ -81,6 +81,7 @@ public class Order {
             lineItems.add(lineItem);
             total += lineItem.getPrice();
             lineItem.setOrdered(true);
+            this.getAccount().setBalance(this.getAccount().getBalance() - lineItem.getPrice());
         }
     }
 

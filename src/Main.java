@@ -143,9 +143,10 @@ public class Main {
             else if (input.equals("Make order")){
                 System.out.println("Type the premium user's account name: ");
                 String premiumAccount = myObj.nextLine() + "'s Account";
+                PremiumAccount PA = null;
                 try {
                     Order o = shopsys.makeNewOrder(premiumAccount);
-
+                    PA = (PremiumAccount)shopsys.retrieveFromMap(premiumAccount);
                     String choose = "";
                     boolean orderDeleted = false;
                     while(!choose.equals("Done")){
@@ -211,7 +212,7 @@ public class Main {
                                         System.out.println("Because we're nice, we won't let you pay above the order's price. ");
                                         continue;
                                     }
-                                    shopsys.paymentMethod(o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
+                                    shopsys.paymentMethod(PA, o, shopsys.getCurrentLoggedIn().getCustomer().getAccount(), paymentType, toPay);
                                     System.out.println("Your payment has been created successfully.");
                                 }
                                 catch (Exception e){
