@@ -184,6 +184,7 @@ public class ShoppingSystem {
         if (cur_account.getOrders().size()!= 0) {
             Order o = cur_account.getOrders().get(cur_account.getOrders().size() - 1);
             System.out.println(o.showAllDetails());
+            o.showAssociated();
         }
         else{
             System.out.println("There is no order to display");

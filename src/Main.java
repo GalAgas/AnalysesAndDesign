@@ -157,10 +157,11 @@ public class Main {
 
                         if(choose.equals("Done")) break;
                         if(!shopsys.orderValidation(premiumAccount, choose)){
-                            System.out.println("You've entered a wrong number, you should make a new order!");
-                            shopsys.deleteWrongOrder(o);
-                            orderDeleted = true;
-                            break;
+                            System.out.println("You've entered a wrong number");
+//                            shopsys.deleteWrongOrder(o);
+//                            orderDeleted = true;
+//                            break;
+                            continue;
                         }
                         Product chosen = shopsys.chooseProduct(premiumAccount, choose);
 //                        System.out.println("We currently have " + chosen.getAmountToSale() + " of " + chosen.getName() + " in stock. ");
