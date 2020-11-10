@@ -23,24 +23,8 @@ public class WebUser {
         return login_id;
     }
 
-    public void setLogin_id(String login_id) {
-        this.login_id = login_id;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public UserState getState() {
-        return state;
-    }
-
-    public void setState(UserState state) {
-        this.state = state;
     }
 
     public Customer getCustomer() {

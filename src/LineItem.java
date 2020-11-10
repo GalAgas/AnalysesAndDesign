@@ -29,10 +29,6 @@ public class LineItem {
 
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public int getPrice() {
         return price;
     }

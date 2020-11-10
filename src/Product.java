@@ -16,13 +16,13 @@ public class Product {
     public Product(String id, String name, Supplier supplier) {
         this.id = id;
         this.name = name;
+        this.price = 0;
+        this.amountToSale = 0;
         this.supplier = supplier;
         this.supplier.addProduct(this);
         this.lineItems = new ArrayList<>();
         this.premiumAccount = null;
-
     }
-
 
     public void removeLineItem(LineItem lineItem){
         lineItems.remove(lineItem);
@@ -40,16 +40,8 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ArrayList<LineItem> getLineItems() {
         return lineItems;
-    }
-
-    public void setLineItems(ArrayList<LineItem> lineItems) {
-        this.lineItems = lineItems;
     }
 
     public Supplier getSupplier() {
@@ -64,10 +56,6 @@ public class Product {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public PremiumAccount getPremiumAccount() {
         return premiumAccount;
     }
@@ -79,13 +67,11 @@ public class Product {
         this.amountToSale = amountToSale;
     }
 
-    //need to connect also from lineItem, !!
     public void addLineItem(LineItem lineItem){
         if (!lineItems.contains(lineItem))
         {
             lineItems.add(lineItem);
         }
-
     }
 
 
