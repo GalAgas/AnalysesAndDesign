@@ -8,7 +8,7 @@ public class Order {
     private String number;
     private Date ordered;
     private Date shipped;
-    private Address shipTo; //Address???
+    private Address shipTo;
     private OrderStatus orderStatus;
     private float total;
     private static Integer autoID=0;
@@ -135,7 +135,6 @@ public class Order {
             System.out.println("Payments:");
             for (Payment p: this.payments){
                 System.out.println("\t" + p + ", amount: " + p.getTotal());
-
             }
         }
     }
