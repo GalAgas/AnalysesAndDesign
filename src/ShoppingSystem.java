@@ -338,7 +338,7 @@ public class ShoppingSystem {
         if (!isNumeric(toPay)) throw new Exception("You didn't enter a number!");
         Payment p = null;
         float pay = Float.parseFloat(toPay);
-        String id = "payment "; //+ this.autoIncreasingId++;
+        String id = "payment ";
         if (paymentType.equals("1")){
             p = new ImmediatePayment(id,account,o,pay);
         }

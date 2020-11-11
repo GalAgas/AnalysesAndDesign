@@ -7,7 +7,6 @@ public class Main {
     // User interface
 
         // build initial system
-
         ShoppingSystem shopsys = new ShoppingSystem();
 
         boolean done = false;
@@ -38,7 +37,7 @@ public class Main {
                 String phone;
                 String email;
 
-                //if getting login_id through input
+                //getting login_id through input
                 login_id = input.substring(12);
 
                 System.out.println("Please enter a password:");
@@ -88,7 +87,7 @@ public class Main {
             else if (input.startsWith("Remove WebUser") && input.length() > 14){
                 String login_id;
 
-                //if getting login_id through input
+                //getting login_id through input
                 login_id = input.substring(15);
 
                 try {
@@ -107,7 +106,7 @@ public class Main {
                 String password;
 
 
-                //if getting login_id through input
+                //getting login_id through input
                 login_id = input.substring(14);
 
                 System.out.println("Please enter your password:");
@@ -159,13 +158,9 @@ public class Main {
                         if(choose.equals("Done")) break;
                         if(!shopsys.orderValidation(premiumAccount, choose)){
                             System.out.println("You've entered a wrong number");
-//                            shopsys.deleteWrongOrder(o);
-//                            orderDeleted = true;
-//                            break;
                             continue;
                         }
                         Product chosen = shopsys.chooseProduct(premiumAccount, choose);
-//                        System.out.println("We currently have " + chosen.getAmountToSale() + " of " + chosen.getName() + " in stock. ");
                         System.out.println("Choose the amount that you want to purchase: ");
 
                         String amount = myObj.nextLine();
@@ -284,12 +279,12 @@ public class Main {
                     shopsys.addProduct(productName, productId, supplierId);
                     System.out.println("Your product has successfully added!");
                 } catch (Exception e) {
-                    e.getMessage();
+                    System.out.println(e.getMessage());
                     System.out.println("Product not added. Please try again.");
                 }
             }
 
-            else if (input.startsWith("Delete Product")){
+            else if (input.startsWith("Delete Product") && input.length() > 14){
                 String productName;
                 productName = input.substring(15);
                 try {
@@ -305,7 +300,7 @@ public class Main {
                 shopsys.showAllObjects();
             }
 
-            else if (input.startsWith("ShowObjectId")){
+            else if (input.startsWith("ShowObjectId") && input.length() > 12){
                 String objectId;
                 objectId = input.substring(13);
                 try {
@@ -325,5 +320,4 @@ public class Main {
             }
         }
     }
-
 }

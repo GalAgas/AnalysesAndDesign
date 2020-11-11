@@ -3,9 +3,7 @@ import java.util.Date;
 
 public class ShoppingCart {
     private Date created;
-//    private static Integer autoID=0;
     private String ID;
-
 
     // Associations
     private ArrayList<LineItem> lineItems;
@@ -17,7 +15,6 @@ public class ShoppingCart {
     }
 
     public ShoppingCart(String id, WebUser webUser, Account account) {
-//        this.autoID += 1;
         this.ID = id;
         this.created = new Date();
         this.webUser = webUser;
