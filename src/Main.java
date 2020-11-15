@@ -15,7 +15,20 @@ public class Main {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
         while (!done){
-            System.out.println("Please type a command:");
+            System.out.println("\n****OUR SYSTEM WORKS WITH THE FOLLOWING COMMANDS****");
+            System.out.println("- Add WebUser *LoginId*");
+            System.out.println("- Remove WebUser *LoginId*");
+            System.out.println("- Login WebUser *LoginId*");
+            System.out.println("- Logout WebUser *LoginId*");
+            System.out.println("- Make order");
+            System.out.println("- Display order");
+            System.out.println("- Link Product *Product_Name*");
+            System.out.println("- Add Product");
+            System.out.println("- Delete Product *Product_Name*");
+            System.out.println("- ShowAllObjects");
+            System.out.println("- ShowObjectId *ObjectId* - ObjectId is as shown in ShowAllObjects");
+            System.out.println("******************************************************\n");
+            System.out.println("Please type one of the above commands:");
             String input = null;
 
             try{
